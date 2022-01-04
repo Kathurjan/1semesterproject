@@ -3,41 +3,29 @@ package be;
 import java.util.Date;
 
 public class Movie {
-    private String category;
-    private String name;
-    private double imdbRating;
-    private double privateRating;
-    private String fileLink;
+
     private int id;
+    private String movieCategory;
+    private String movieName;
+    private double imdbRating;
+    private double personalRating;
+    private String fileLink;
+    private Date lastView;
 
-    public Movie(String category, String name, double imdbRating, double privateRating, String fileLink, int id) {
-        this.category = category;
-        this.name = name;
-        this.imdbRating = imdbRating;
-        this.privateRating = privateRating;
-        this.fileLink = fileLink;
-        this.id = id;
-
-
-    }
-    public int getId(){
-        return id;
+    public String getMovieCategory() {
+        return movieCategory;
     }
 
-    public String getCategory() {
-        return category;
+    public void setMovieCategory(String movieCategory) {
+        this.movieCategory = movieCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public String getMovieName() {
+        return movieName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
     }
 
     public double getImdbRating() {
@@ -48,12 +36,12 @@ public class Movie {
         this.imdbRating = imdbRating;
     }
 
-    public double getPrivateRating() {
-        return privateRating;
+    public double getPersonalRating() {
+        return personalRating;
     }
 
-    public void setPrivateRating(double privateRating) {
-        this.privateRating = privateRating;
+    public void setPersonalRating(double personalRating) {
+        this.personalRating = personalRating;
     }
 
     public String getFileLink() {
@@ -64,5 +52,15 @@ public class Movie {
         this.fileLink = fileLink;
     }
 
+    public Date getLastView() {
+        return lastView;
+    }
 
+    public void setLastView(Date lastView) {
+        this.lastView = lastView;
+    }
+
+    private int getId() {
+        return id;
+    }
 }

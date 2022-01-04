@@ -8,9 +8,21 @@ public class Movie {
     private double imdbRating;
     private double privateRating;
     private String fileLink;
-public Movie (){
+    private int id;
 
-}
+    public Movie(String category, String name, double imdbRating, double privateRating, String fileLink, int id) {
+        this.category = category;
+        this.name = name;
+        this.imdbRating = imdbRating;
+        this.privateRating = privateRating;
+        this.fileLink = fileLink;
+        this.id = id;
+
+
+    }
+    public int getId(){
+        return id;
+    }
 
     public String getCategory() {
         return category;

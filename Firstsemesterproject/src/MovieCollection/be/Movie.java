@@ -1,20 +1,22 @@
-package MovieCollection;
+package MovieCollection.be;
 
 public class Movie {
-    private String category;
+    private String[] category;
+    private String categoryString;
     private String name;
     private double imdbRating;
     private double privateRating;
     private String fileLink;
     private int id;
 
-    public Movie(String category, String name, double imdbRating, double privateRating, String fileLink, int id) {
+    public Movie(String name, double imdbRating, double privateRating, String fileLink, int id, String ... category) {
         this.category = category;
         this.name = name;
         this.imdbRating = imdbRating;
         this.privateRating = privateRating;
         this.fileLink = fileLink;
         this.id = id;
+        this.categoryString = getCategoryString();
 
 
     }
@@ -22,11 +24,21 @@ public class Movie {
         return id;
     }
 
-    public String getCategory() {
+    public String[] getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public String getCategoryString(){
+        StringBuilder sb = new StringBuilder();
+        for(String s : category)
+        {
+            sb.append(", " + s);
+        }
+        String string = sb.toString().replaceFirst(", ", "");
+        return string;
+    }
+
+    public void setCategory(String[] category) {
         this.category = category;
     }
 

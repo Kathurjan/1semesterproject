@@ -1,4 +1,4 @@
-package be;
+package MovieCollection.be;
 
 public class category {
 

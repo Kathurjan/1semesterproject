@@ -1,4 +1,6 @@
-package MovieCollection;
+package MovieCollection.be;
+
+import java.util.Date;
 
 public class Movie {
     private String category;
@@ -7,16 +9,26 @@ public class Movie {
     private double privateRating;
     private String fileLink;
     private int id;
+    private Date lastView;
 
-    public Movie(String category, String name, double imdbRating, double privateRating, String fileLink, int id) {
+    public Movie(String category, String name, double imdbRating, double privateRating, String fileLink, int id,Date lastView) {
         this.category = category;
         this.name = name;
         this.imdbRating = imdbRating;
         this.privateRating = privateRating;
         this.fileLink = fileLink;
         this.id = id;
+        this.lastView = lastView;
 
 
+
+    }
+    public Date getLastview() {
+        return lastView;
+    }
+
+    public void setLastview(Date lastview) {
+        this.lastView = lastview;
     }
     public int getId(){
         return id;

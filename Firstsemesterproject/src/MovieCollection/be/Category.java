@@ -1,15 +1,13 @@
 package MovieCollection.be;
 
-public class category {
+public class Category {
 
 
     private String categoryName;
     private int id;
 
-    public category(String categoryName, int id){
+    public Category(String categoryName){
         this.categoryName = categoryName;
-        this.id = id;
-
     }
 
     public String getCategoryName() {
@@ -21,6 +19,11 @@ public class category {
     }
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString(){
+        return categoryName;
     }
 
 }

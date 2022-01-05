@@ -1,8 +1,9 @@
 package MovieCollection.be;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Movie {
-    private String[] category;
+    private ArrayList<Category> category;
     private String categoryString;
     private String name;
     private double imdbRating;
@@ -11,7 +12,7 @@ public class Movie {
     private int id;
     private Date lastView;
 
-    public Movie(String name, double imdbRating, double privateRating, String fileLink, int id, String ... category) {
+    public Movie(String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
         this.category = category;
         this.name = name;
         this.imdbRating = imdbRating;
@@ -33,21 +34,21 @@ public class Movie {
         return id;
     }
 
-    public String[] getCategory() {
+    public ArrayList<Category> getCategory() {
         return category;
     }
 
     public String getCategoryString(){
         StringBuilder sb = new StringBuilder();
-        for(String s : category)
+        for(Category s : category)
         {
-            sb.append(", " + s);
+            sb.append(", " + s.getCategoryName());
         }
         String string = sb.toString().replaceFirst(", ", "");
         return string;
     }
 
-    public void setCategory(String[] category) {
+    public void setCategory(ArrayList<Category> category) {
         this.category = category;
     }
 

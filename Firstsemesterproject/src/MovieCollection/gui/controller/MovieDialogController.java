@@ -34,7 +34,6 @@ public class MovieDialogController implements Initializable{
         CategoryManager categoryManager = new CategoryManager();
         choiceBoxCategory.getItems().addAll(categoryManager.getCategories());
 
-
     }
 
     public String getTitle() {

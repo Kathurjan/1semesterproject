@@ -72,18 +72,18 @@ public class MovieDao {
     public Movie editMovie(Movie selectedMovie, String name, double imdbRating, double privateRating, String fileLink, String... category) {
 
         try (Connection con = db.getConnection()) {
-            String sqlStatement = "UPDATE dbo.movie set Moviename = ?, set Category = ?, set imdbRating = ?, set Personalrating = ?, set fileLink = ? WHERE = id? ";
-            PreparedStatement preparedStatement =con.prepareStatement(sqlStatement);
+            String sqlStatement = "UPDATE dbo.movie set Moviename = ?, set Category = ?, set imdbRating = ?, set Personalrating = ?, set fileLink = ? WHERE = ID? ";
+            PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
 
-            preparedStatement.setString(1,name);
-            preparedStatement.setDouble(2,imdbRating);
-            preparedStatement.setDouble(3,privateRating);
-            preparedStatement.setString(4,fileLink);
+            preparedStatement.setString(1, name);
+            preparedStatement.setDouble(2, imdbRating);
+            preparedStatement.setDouble(3, privateRating);
+            preparedStatement.setString(4, fileLink);
             preparedStatement.setString(5, selectedMovie.getCategoryString());
-            preparedStatement.setInt(6,selectedMovie.getId());
+            preparedStatement.setInt(6, selectedMovie.getId());
 
             preparedStatement.executeUpdate();
-                    return new Movie(name,imdbRating,privateRating,fileLink, selectedMovie.getId(), selectedMovie.getCategoryString());
+            return new Movie(name, imdbRating, privateRating, fileLink, selectedMovie.getId(), selectedMovie.getCategoryString());
 
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -93,5 +93,17 @@ public class MovieDao {
 
     }
 
+public void deleteMovie(Movie selectedMovie){
+        try(Connection con = db.getConnection()){
+            String sqlStatement = "DELETE FROM dbo.Movie WHERE ID = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1,selectedMovie.getId());
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException ex){
+            System.out.println(ex);
+
+        }
+}
 
 }

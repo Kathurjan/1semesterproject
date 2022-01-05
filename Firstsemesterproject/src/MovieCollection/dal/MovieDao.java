@@ -44,34 +44,54 @@ public class MovieDao {
         return movielist;
     }
 
-    public Movie addMovie(String name, double imdbRating, double privateRating, String fileLink, String ... category){
+    public Movie addMovie(String name, double imdbRating, double privateRating, String fileLink, String... category) {
         String sqlStatement = "INSERT INTO dbo.Movie(Moviename,imdbRating,Personalrating,fileLink,Category)VALUES(?,?,?,?,?)";
 
-        try(Connection con = db.getConnection()){
+        try (Connection con = db.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
 
-            preparedStatement.setString(1,name);
-            preparedStatement.setDouble(2,imdbRating);
-            preparedStatement.setDouble(3,privateRating);
-            preparedStatement.setString(4,fileLink);
+            preparedStatement.setString(1, name);
+            preparedStatement.setDouble(2, imdbRating);
+            preparedStatement.setDouble(3, privateRating);
+            preparedStatement.setString(4, fileLink);
             preparedStatement.setString(5, String.valueOf(category));
 
             preparedStatement.addBatch();
             preparedStatement.executeUpdate();
 
-        }
-        catch(SQLException Ex){
+        } catch (SQLException Ex) {
             System.out.println(Ex);
-        return null;
+            return null;
 
         }
-        Movie movie = new Movie(name,imdbRating,privateRating,fileLink,1,category);
+        Movie movie = new Movie(name, imdbRating, privateRating, fileLink, 1, category);
         return movie;
 
     }
 
-    
+    public Movie editMovie(Movie selectedMovie, String name, double imdbRating, double privateRating, String fileLink, String... category) {
 
+        try (Connection con = db.getConnection()) {
+            String sqlStatement = "UPDATE dbo.movie set Moviename = ?, set Category = ?, set imdbRating = ?, set Personalrating = ?, set fileLink = ? WHERE = id? ";
+            PreparedStatement preparedStatement =con.prepareStatement(sqlStatement);
+
+            preparedStatement.setString(1,name);
+            preparedStatement.setDouble(2,imdbRating);
+            preparedStatement.setDouble(3,privateRating);
+            preparedStatement.setString(4,fileLink);
+            preparedStatement.setString(5, selectedMovie.getCategoryString());
+            preparedStatement.setInt(6,selectedMovie.getId());
+
+            preparedStatement.executeUpdate();
+                    return new Movie(name,imdbRating,privateRating,fileLink, selectedMovie.getId(), selectedMovie.getCategoryString());
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+
+        }
+
+    }
 
 
 }

@@ -1,12 +1,12 @@
 package MovieCollection.be;
 
-public class category {
+public class Category {
 
 
     private String categoryName;
     private int id;
 
-    public category(String categoryName, int id){
+    public Category(String categoryName, int id){
         this.categoryName = categoryName;
         this.id = id;
 

@@ -1,6 +1,4 @@
 package MovieCollection.Dal;
-
-import Dal.DatabaseConnector;
 import MovieCollection.be.Movie;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

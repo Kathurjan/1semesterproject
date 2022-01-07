@@ -1,4 +1,5 @@
 package MovieCollection.Dal;
+
 import MovieCollection.be.Movie;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,9 +43,8 @@ public class MovieDao {
         return movielist;
     }
 
-    public Movie addMovie(String name, double imdbRating, double privateRating, String fileLink, String... category) {
+    /*public Movie addMovie(String name, double imdbRating, double privateRating, String fileLink, String... category) {
         String sqlStatement = "INSERT INTO dbo.Movie(Moviename,imdbRating,Personalrating,fileLink,Category)VALUES(?,?,?,?,?)";
-
         try (Connection con = db.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
 
@@ -65,6 +65,38 @@ public class MovieDao {
         Movie movie = new Movie(name, imdbRating, privateRating, fileLink, 1, category);
         return movie;
 
+    }*/
+
+    public Movie addmovie(Movie movie) {
+        String name = movie.getName();
+        double imdbrating = movie.getImdbRating();
+        double privaterating = movie.getPrivateRating();
+        String filelink = movie.getFileLink();
+        String[] Category = movie.getCategory();
+        int id = movie.getId();
+
+        String query = "INSERT INTO dbo.Movie(Moviename,imdbRating,Personalrating,fileLink,Category)VALUES(?,?,?,?,?)";
+
+        try (Connection con = db.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setDouble(2, imdbrating);
+            preparedStatement.setDouble(3, privaterating);
+            preparedStatement.setString(4, filelink);
+            preparedStatement.setString(5, String.valueOf(Category));
+
+            preparedStatement.addBatch();
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+
+        }
+        Movie movietoadd = new Movie(name, imdbrating, privaterating, filelink, id, Category);
+        return movietoadd;
     }
 
     public Movie editMovie(Movie selectedMovie, String name, double imdbRating, double privateRating, String fileLink, String... category) {
@@ -91,17 +123,16 @@ public class MovieDao {
 
     }
 
-public void deleteMovie(Movie selectedMovie){
-        try(Connection con = db.getConnection()){
+    public void deleteMovie(Movie selectedMovie) {
+        try (Connection con = db.getConnection()) {
             String sqlStatement = "DELETE FROM dbo.Movie WHERE ID = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1,selectedMovie.getId());
+            preparedStatement.setInt(1, selectedMovie.getId());
             preparedStatement.executeUpdate();
-        }
-        catch(SQLException ex){
+        } catch (SQLException ex) {
             System.out.println(ex);
 
         }
-}
+    }
 
 }

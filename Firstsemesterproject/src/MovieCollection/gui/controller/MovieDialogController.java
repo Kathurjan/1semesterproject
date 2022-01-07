@@ -1,7 +1,7 @@
 package MovieCollection.gui.controller;
 
 import MovieCollection.be.Category;
-import MovieCollection.gui.model.CategoryManager;
+import MovieCollection.gui.model.CategoriesModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -24,16 +24,18 @@ public class MovieDialogController implements Initializable{
     public ArrayList<Category> categoryList;
     public Button btnAddCategoryDialog;
     public Button btnRemoveCategoryDialog;
-    private CategoryManager categoryManager;
-    public ChoiceBox<String> choiceBoxCategory;
+    public ChoiceBox<Category> choiceBoxCategory;
+
+    private CategoriesModel cbcModel;
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.categoryList = new ArrayList<>();
-        this.categoryManager = new CategoryManager();
-        choiceBoxCategory.getItems().addAll(categoryManager.getObsListCategories());
+        this.cbcModel = new CategoriesModel();
 
+        choiceBoxCategory.getItems().addAll(cbcModel.getAllCategories());
     }
 
     public String getTitle() {
@@ -42,7 +44,7 @@ public class MovieDialogController implements Initializable{
 
     public Category getCategory()
     {
-        return categoryManager.returnQueriedCategory(this.choiceBoxCategory.getValue());
+        return this.choiceBoxCategory.getValue();
     }
 
     public double getPersonalRating(){return Double.parseDouble(this.txtFieldPersonalRating.getText());}

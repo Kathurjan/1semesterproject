@@ -2,6 +2,7 @@ package MovieCollection.gui.model;
 
 import MovieCollection.be.Movie;
 import MovieCollection.be.Category;
+import MovieCollection.bll.CategoryLogic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -10,15 +11,15 @@ import java.util.ArrayList;
 public class TableViewMoviesModel {
 
     ObservableList<Movie> movieList;
-    CategoryManager categoryManager;
+    CategoryLogic categoryLogic;
 
     public TableViewMoviesModel()
     {
         movieList = FXCollections.observableArrayList();
-        this.categoryManager = new CategoryManager();
+        this.categoryLogic = new CategoryLogic();
 
         ArrayList<Category> categories = new ArrayList<>();
-        categories.add(categoryManager.returnQueriedCategory("action"));
+        categories.addAll(categoryLogic.getAllCategories());
         Movie testMovie = new Movie("bob", 4.2, 4.2, "whatever", categories);
         movieList.add(testMovie);
     }
@@ -37,7 +38,7 @@ public class TableViewMoviesModel {
         this.movieList.set(movieList.indexOf(selectedMovie), editedMovie);
     }
 
-    public ObservableList getMovieList() {
+    public ObservableList<Movie> getMovieList() {
         return movieList;
     }
 }

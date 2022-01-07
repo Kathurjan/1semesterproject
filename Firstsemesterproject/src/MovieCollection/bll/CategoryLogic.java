@@ -16,7 +16,14 @@ public class CategoryLogic {
 
     public ArrayList<Category> getAllCategories()
     {
-
+        return categoryDao.getAllCategories();
     }
 
+    public Category add(Category category) {
+        return categoryDao.add(category);
+    }
+
+    public void delete(Category category) {
+        categoryDao.delete(category);
+    }
 }

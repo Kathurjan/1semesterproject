@@ -2,7 +2,7 @@ package MovieCollection.gui.controller;
 
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
-import MovieCollection.gui.model.CategoryManager;
+import MovieCollection.gui.model.CategoriesModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
 import MovieCollection.gui.view.CategoryDialog;
 import MovieCollection.gui.view.MovieDialog;
@@ -38,13 +38,13 @@ public class MovieCollectionController implements Initializable {
     public TableColumn<Movie, String> tblColumnPersonalRating;
     public TableColumn<Movie, String> tblColumnIMDBRating;
 
-    private CategoryManager categoryManager;
+    private CategoriesModel categoriesModel;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tableViewMoviesModel = new TableViewMoviesModel();
-        this.categoryManager = new CategoryManager();
+        this.categoriesModel = new CategoriesModel();
         movieTblView.setItems(tableViewMoviesModel.getMovieList());
 
         this.initTables();
@@ -114,7 +114,7 @@ public class MovieCollectionController implements Initializable {
         Optional<Category> result =dialog.showAndWait();
         result.ifPresent(response -> {
             try{
-                this.categoryManager.addCategoryToManager(response);
+                this.categoriesModel.addNewCategory(response);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -127,7 +127,7 @@ public class MovieCollectionController implements Initializable {
         Optional<Category> result = dialog.showAndWait();
         result.ifPresent(response ->{
             try{
-                this.categoryManager.removeCategoryFromManager(response);
+                this.categoriesModel.deleteCategory(response);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

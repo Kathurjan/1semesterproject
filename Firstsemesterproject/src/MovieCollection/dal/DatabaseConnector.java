@@ -1,4 +1,4 @@
-package Dal;
+package MovieCollection.Dal;
 
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;

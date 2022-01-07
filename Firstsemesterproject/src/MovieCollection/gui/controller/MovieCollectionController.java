@@ -1,8 +1,13 @@
 package MovieCollection.gui.controller;
 
+import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
+import MovieCollection.gui.model.CategoryManager;
 import MovieCollection.gui.model.TableViewMoviesModel;
+import MovieCollection.gui.view.CategoryDialog;
 import MovieCollection.gui.view.MovieDialog;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -12,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -25,16 +31,20 @@ public class MovieCollectionController implements Initializable {
     public TextField filterTxtField;
 
     public TableView<Movie> movieTblView;
+    public Button btnFilterSearch;
     private TableViewMoviesModel tableViewMoviesModel;
     public TableColumn<Movie, String> tblColumnTitle;
     public TableColumn<Movie, String> tblColumnCategory;
     public TableColumn<Movie, String> tblColumnPersonalRating;
     public TableColumn<Movie, String> tblColumnIMDBRating;
 
+    private CategoryManager categoryManager;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tableViewMoviesModel = new TableViewMoviesModel();
+        this.categoryManager = new CategoryManager();
         movieTblView.setItems(tableViewMoviesModel.getMovieList());
 
         this.initTables();
@@ -65,22 +75,96 @@ public class MovieCollectionController implements Initializable {
 
     public void handleEditMovieClick(ActionEvent actionEvent) {
 
-        /*Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
+        Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
         if(selectedMovie != null){
             MovieDialog dialog = new MovieDialog();
-            dialog.
+            dialog.setFields(selectedMovie);
+            Optional<Movie> result = dialog.showAndWait();
+            result.ifPresent(response -> {
+                response.setId(selectedMovie.getId());
+                try{
+                    this.tableViewMoviesModel.editMovie(selectedMovie, response);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            });
         }
 
-         */
 
     }
 
     public void handleDeleteMovieClick(ActionEvent actionEvent) {
+
+      Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
+
+      if(selectedMovie!=null)
+      {
+          try{
+              this.tableViewMoviesModel.deleteMovie(selectedMovie);
+          } catch (Exception exception) {
+              exception.printStackTrace();
+          }
+      }
+
     }
 
     public void handleAddCategoryClick(ActionEvent actionEvent) {
+
+        CategoryDialog dialog = new CategoryDialog();
+        Optional<Category> result =dialog.showAndWait();
+        result.ifPresent(response -> {
+            try{
+                this.categoryManager.addCategoryToManager(response);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+
     }
 
     public void handleDeleteCategoryClick(ActionEvent actionEvent) {
+        CategoryDialog dialog = new CategoryDialog();
+        Optional<Category> result = dialog.showAndWait();
+        result.ifPresent(response ->{
+            try{
+                this.categoryManager.removeCategoryFromManager(response);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+    }
+
+    public void handleFilterClick(ActionEvent actionEvent) {
+        String query = filterTxtField.getText().toLowerCase(Locale.ROOT).strip();
+        ObservableList<Movie> movies = movieTblView.getItems();
+        ObservableList<Movie> queriedMovies = FXCollections.observableArrayList();
+
+        for (Movie movie : movies)
+        {
+            if(movie.getName().contains(query))
+            {
+                queriedMovies.add(movie);
+                break;
+            }
+            if(String.valueOf(movie.getImdbRating()).contains(query))
+            {
+                queriedMovies.add(movie);
+                break;
+            }
+            if(String.valueOf(movie.getPrivateRating()).contains(query))
+            {
+                queriedMovies.add(movie);
+                break;
+            }
+            for(Category category: movie.getCategory())
+            {
+                if(category.toString().contains(query))
+                {
+                    queriedMovies.add(movie);
+                    break;
+                }
+            }
+        }
+        movieTblView.setItems(queriedMovies);
     }
 }

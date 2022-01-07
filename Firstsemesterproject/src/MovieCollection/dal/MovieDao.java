@@ -1,4 +1,7 @@
-package Dal;
+package MovieCollection.Dal;
 
 public class MovieDao {
+
+
+
 }

@@ -30,9 +30,12 @@ public class Movie {
     public void setLastview(Date lastview) {
         this.lastView = lastview;
     }
+
     public int getId(){
         return id;
     }
+
+    public void setId(int id){this.id = id;}
 
     public ArrayList<Category> getCategory() {
         return category;

@@ -17,22 +17,22 @@ import java.util.ResourceBundle;
 
 public class MovieDialogController implements Initializable{
     public TextField txtFieldTitle;
-    public TextField txtFieldCategory;
     public TextField txtFieldPersonalRating;
     public TextField txtFieldIMDB;
     public TextField txtFieldFile;
-    public Button btnAddCategory;
 
     public ArrayList<Category> categoryList;
+    public Button btnAddCategoryDialog;
+    public Button btnRemoveCategoryDialog;
     private CategoryManager categoryManager;
-    public ChoiceBox<Category> choiceBoxCategory;
+    public ChoiceBox<String> choiceBoxCategory;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.categoryList = new ArrayList<Category>();
-        CategoryManager categoryManager = new CategoryManager();
-        choiceBoxCategory.getItems().addAll(categoryManager.getCategories());
+        this.categoryList = new ArrayList<>();
+        this.categoryManager = new CategoryManager();
+        choiceBoxCategory.getItems().addAll(categoryManager.getObsListCategories());
 
     }
 
@@ -40,7 +40,10 @@ public class MovieDialogController implements Initializable{
         return this.txtFieldTitle.getText();
     }
 
-    public Category getCategory(){return this.choiceBoxCategory.getValue();}
+    public Category getCategory()
+    {
+        return categoryManager.returnQueriedCategory(this.choiceBoxCategory.getValue());
+    }
 
     public double getPersonalRating(){return Double.parseDouble(this.txtFieldPersonalRating.getText());}
 
@@ -50,13 +53,16 @@ public class MovieDialogController implements Initializable{
 
     public void setTitle(String title){this.txtFieldTitle.setText(title);}
 
-    public void setCategory(Category category){}
+    public void setPersonalRating(double rating){this.txtFieldPersonalRating.setText(String.valueOf(rating));}
 
-    public void setPersonalRating(int rating){this.txtFieldPersonalRating.setText(String.valueOf(rating));}
-
-    public void setIMDB(int rating){this.txtFieldIMDB.setText(String.valueOf(rating));}
+    public void setIMDB(double rating){this.txtFieldIMDB.setText(String.valueOf(rating));}
 
     public void setFilePath(String path){this.txtFieldFile.setText(path);}
+
+    public void setCategories(ArrayList<Category> categories)
+    {
+        categoryList.addAll(categories);
+    }
 
     public ArrayList<Category> getCategoryList(){return this.categoryList;}
 
@@ -77,8 +83,22 @@ public class MovieDialogController implements Initializable{
     }
 
     public void handleAddCategoryClick(ActionEvent actionEvent) {
-        categoryList.add(getCategory());
+        boolean shouldBeAdded = true;
+        for(Category cat: categoryList)
+        {
+            if(cat.getCategoryName().equals(getCategory().getCategoryName()))
+            {
+                shouldBeAdded = false;
+            }
+        }
+        if (shouldBeAdded)
+        {
+            categoryList.add(getCategory());
+        }
     }
 
 
+    public void handleRemoveCategoryClick(ActionEvent actionEvent) {
+        categoryList.removeIf(category -> category.getCategoryName().equals(getCategory().getCategoryName()));
+    }
 }

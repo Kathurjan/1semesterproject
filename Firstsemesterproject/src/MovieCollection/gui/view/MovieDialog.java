@@ -36,6 +36,10 @@ public class MovieDialog extends Dialog<Movie> {
     public void setFields(Movie movie)
     {
         controller.setTitle(movie.getName());
+        controller.setIMDB(movie.getImdbRating());
+        controller.setPersonalRating(movie.getPrivateRating());
+        controller.setFilePath(movie.getFileLink());
+        controller.setCategories(movie.getCategory());
     }
 
 }

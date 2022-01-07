@@ -30,15 +30,9 @@ public class CategoriesModel {
         categories.add(category);
     }
 
-
     public void deleteCategory(Category category) {
         categoryLogic.delete(category);
         categories.remove(category);
     }
 
-    public void refreshCategories()
-    {
-        categories.removeAll();
-        categories.addAll(categoryLogic.getAllCategories());
-    }
 }

@@ -60,5 +60,17 @@ public class CategoryDao {
     }
 
     public void delete(Category category) {
+
+        try (Connection connection = databaseConnector.getConnection())
+        {
+            String sql ="DELETE FROM Category WHERE ID=?";
+            PreparedStatement statement =connection.prepareStatement(sql);
+
+            statement.setInt(1, category.getId());
+
+            statement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<DialogPane expanded="true" prefHeight="136.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MovieCollection.gui.controller.CategoryDialogController">
+<DialogPane expanded="true" prefHeight="136.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MovieCollection.gui.controller.CategoryDialogAddController">
    <content>
       <HBox prefHeight="38.0" prefWidth="360.0">
          <children>

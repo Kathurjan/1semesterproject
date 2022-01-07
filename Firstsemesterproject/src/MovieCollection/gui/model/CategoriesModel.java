@@ -5,7 +5,6 @@ import MovieCollection.bll.CategoryLogic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 
 public class CategoriesModel {
 
@@ -28,10 +27,18 @@ public class CategoriesModel {
     public void addNewCategory(Category category)
     {
         categories.add(categoryLogic.add(category));
+        categories.add(category);
     }
 
 
     public void deleteCategory(Category category) {
         categoryLogic.delete(category);
+        categories.remove(category);
+    }
+
+    public void refreshCategories()
+    {
+        categories.removeAll();
+        categories.addAll(categoryLogic.getAllCategories());
     }
 }

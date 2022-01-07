@@ -1,7 +1,8 @@
 package MovieCollection.gui.view;
 
 import MovieCollection.be.Category;
-import MovieCollection.gui.controller.CategoryDialogController;
+import MovieCollection.gui.controller.CategoryDialogAddController;
+import MovieCollection.gui.controller.CategoryDialogDeleteController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -9,22 +10,23 @@ import javafx.scene.control.DialogPane;
 
 import java.io.IOException;
 
-public class CategoryDialog extends Dialog<Category> {
+public class CategoryDialogDelete extends Dialog<Category> {
 
-    private CategoryDialogController controller;
 
-    public CategoryDialog()
+    private CategoryDialogDeleteController controller;
+
+    public CategoryDialogDelete()
     {
         super();
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryDialogView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryDialogDeleteView.fxml"));
             DialogPane dp = loader.load();
             controller = loader.getController();
-            this.setTitle("Add/delete Category");
+            this.setTitle("Delete Category");
             this.setDialogPane(dp);
             this.setResultConverter(buttonType ->{
-                if(buttonType == ButtonType.APPLY){
-                    return new Category(controller.getName());
+                if(buttonType == ButtonType.CLOSE){
+                    this.close();
                 }
                 return null;
             });

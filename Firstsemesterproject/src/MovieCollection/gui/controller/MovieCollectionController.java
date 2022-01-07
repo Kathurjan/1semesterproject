@@ -4,7 +4,8 @@ import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
 import MovieCollection.gui.model.CategoriesModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
-import MovieCollection.gui.view.CategoryDialog;
+import MovieCollection.gui.view.CategoryDialogAdd;
+import MovieCollection.gui.view.CategoryDialogDelete;
 import MovieCollection.gui.view.MovieDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -110,7 +111,7 @@ public class MovieCollectionController implements Initializable {
 
     public void handleAddCategoryClick(ActionEvent actionEvent) {
 
-        CategoryDialog dialog = new CategoryDialog();
+        CategoryDialogAdd dialog = new CategoryDialogAdd();
         Optional<Category> result =dialog.showAndWait();
         result.ifPresent(response -> {
             try{
@@ -123,15 +124,8 @@ public class MovieCollectionController implements Initializable {
     }
 
     public void handleDeleteCategoryClick(ActionEvent actionEvent) {
-        CategoryDialog dialog = new CategoryDialog();
-        Optional<Category> result = dialog.showAndWait();
-        result.ifPresent(response ->{
-            try{
-                this.categoriesModel.deleteCategory(response);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        });
+        CategoryDialogDelete dialog = new CategoryDialogDelete();
+        dialog.show();
     }
 
     public void handleFilterClick(ActionEvent actionEvent) {

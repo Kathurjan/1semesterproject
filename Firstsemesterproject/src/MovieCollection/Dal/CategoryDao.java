@@ -1,7 +1,6 @@
 package MovieCollection.Dal;
 
 import MovieCollection.be.Category;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
 import java.util.ArrayList;

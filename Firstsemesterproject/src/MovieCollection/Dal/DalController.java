@@ -16,16 +16,21 @@ public class DalController implements DalInterface {
 
     @Override
     public Movie addMovie(String name, double imdbRating, double privateRating, String fileLink, String... category) {
-        return null;
+        return movieDao.addMovie(name,imdbRating,privateRating,fileLink,category);
+    }
+    //might be an issue caused from not using parameters to create the object not sure though.
+    @Override
+    public Movie addmovie(Movie movie) {
+        return movieDao.addmovie(movie);
     }
 
     @Override
     public Movie editMovie(Movie selectedMovie, String name, double imdbRating, double privateRating, String fileLink, String... category) {
-        return null;
+       return movieDao.editMovie(selectedMovie,name,imdbRating,privateRating,fileLink,category);
     }
 
     @Override
     public void deleteMovie(Movie selectedMovie) {
-
+        movieDao.deleteMovie(selectedMovie);
     }
 }

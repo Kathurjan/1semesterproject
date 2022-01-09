@@ -42,8 +42,8 @@ public class MovieDao {
         }
         return movielist;
     }
-
-    /*public Movie addMovie(String name, double imdbRating, double privateRating, String fileLink, String... category) {
+     // initial method using with parameters.
+    public Movie addMovie(String name, double imdbRating, double privateRating, String fileLink, String... category) {
         String sqlStatement = "INSERT INTO dbo.Movie(Moviename,imdbRating,Personalrating,fileLink,Category)VALUES(?,?,?,?,?)";
         try (Connection con = db.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
@@ -65,7 +65,7 @@ public class MovieDao {
         Movie movie = new Movie(name, imdbRating, privateRating, fileLink, 1, category);
         return movie;
 
-    }*/
+    }
 
     public Movie addmovie(Movie movie) {
         String name = movie.getName();
@@ -95,14 +95,14 @@ public class MovieDao {
             return null;
 
         }
-        Movie movietoadd = new Movie(name, imdbrating, privaterating, filelink, id, Category);
-        return movietoadd;
+        movie = new Movie(name, imdbrating, privaterating, filelink, id, Category);
+        return movie;
     }
 
     public Movie editMovie(Movie selectedMovie, String name, double imdbRating, double privateRating, String fileLink, String... category) {
 
         try (Connection con = db.getConnection()) {
-            String sqlStatement = "UPDATE dbo.movie set Moviename = ?, set Category = ?, set imdbRating = ?, set Personalrating = ?, set fileLink = ? WHERE = ID? ";
+            String sqlStatement = "UPDATE dbo.movie set Moviename = ?, set Category = ?, set imdbRating = ?, set Personalrating = ?, set fileLink = ? WHERE ID = ? ";
             PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
 
             preparedStatement.setString(1, name);

@@ -129,36 +129,6 @@ public class MovieCollectionController implements Initializable {
     }
 
     public void handleFilterClick(ActionEvent actionEvent) {
-        String query = filterTxtField.getText().toLowerCase(Locale.ROOT).strip();
-        ObservableList<Movie> movies = movieTblView.getItems();
-        ObservableList<Movie> queriedMovies = FXCollections.observableArrayList();
 
-        for (Movie movie : movies)
-        {
-            if(movie.getName().contains(query))
-            {
-                queriedMovies.add(movie);
-                break;
-            }
-            if(String.valueOf(movie.getImdbRating()).contains(query))
-            {
-                queriedMovies.add(movie);
-                break;
-            }
-            if(String.valueOf(movie.getPrivateRating()).contains(query))
-            {
-                queriedMovies.add(movie);
-                break;
-            }
-            for(Category category: movie.getCategory())
-            {
-                if(category.toString().contains(query))
-                {
-                    queriedMovies.add(movie);
-                    break;
-                }
-            }
-        }
-        movieTblView.setItems(queriedMovies);
     }
 }

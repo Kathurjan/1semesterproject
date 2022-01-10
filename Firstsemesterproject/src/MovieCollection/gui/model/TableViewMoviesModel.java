@@ -19,30 +19,40 @@ public class TableViewMoviesModel {
     {
         movieList = FXCollections.observableArrayList();
         this.movieLogic = new MovieLogic();
-        movieList.addAll(getAllMovies());
-    }
-
-    public void addMovie(Movie movie)
-    {
-        this.movieList.add(movie);
-        movieLogic.addMovie(movie);
-    }
-
-    public void deleteMovie(Movie movie)
-    {
-        this.movieList.remove(movie);
-    }
-
-    public void editMovie(Movie selectedMovie, Movie editedMovie) {
-        this.movieList.set(movieList.indexOf(selectedMovie), editedMovie);
+        refresh();
     }
 
     public ObservableList<Movie> getMovieList() {
         return movieList;
     }
 
-    public ArrayList<Movie> getAllMovies()
+    public void addMovie(Movie movie)
     {
-        return movieLogic.getAllMovies();
+        this.movieList.add(movieLogic.addMovie(movie));
     }
+
+    public void deleteMovie(Movie movie)
+    {
+        this.movieList.remove(movie);
+        movieLogic.deleteMovie(movie);
+    }
+
+    public void editMovie(Movie selectedMovie, Movie editedMovie) {
+        editedMovie.setId(selectedMovie.getId());
+        this.movieList.set(movieList.indexOf(selectedMovie), editedMovie);
+        movieLogic.editMovie(editedMovie);
+
+    }
+
+    public void deleteAll(){
+        this.movieList.remove(0, this.movieList.size());
+    }
+
+
+    public void refresh()
+    {
+        this.deleteAll();
+        this.movieList.addAll(movieLogic.getAllMovies());
+    }
+
 }

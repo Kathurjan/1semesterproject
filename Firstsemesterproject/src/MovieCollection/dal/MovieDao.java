@@ -91,9 +91,11 @@ public class MovieDao {
                 ArrayList<Category> categories = new ArrayList<>();
 
                 Movie movie = new Movie(ID, movieName, imdbRating, personalRating, fileLink, categories);
+                movie.setLastview(lastView);
                 movie.setCategory(getCategoryRelations(movie));
                 allMovies.add(movie);
             }
+            return allMovies;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -145,4 +147,58 @@ public class MovieDao {
         }
         return null;
     }
+
+    public void deleteMovie(Movie movie) {
+        int ID = movie.getId();
+
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "DELETE FROM Movie WHERE ID=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, ID);
+            statement.execute();
+            deleteCatMovieRelation(ID);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void deleteCatMovieRelation(int ID) {
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "DELETE FROM CatMovie WHERE Movieid = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, ID);
+            statement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void editMovie(Movie movie) {
+        int selectedID = movie.getId();
+        String movieName = movie.getName();
+        double imdbRating = movie.getImdbRating();
+        double personalRating = movie.getPrivateRating();
+        String fileLink = movie.getFileLink();
+
+        try (Connection connection = databaseConnector.getConnection()) {
+
+            String sql = "UPDATE Movie SET Moviename = ?, imdbRating = ?, Personalrating = ?, fileLink = ? WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, movieName);
+            statement.setDouble(2, imdbRating);
+            statement.setDouble(3, personalRating);
+            statement.setString(4, fileLink);
+            statement.setInt(5, selectedID);
+
+            statement.execute();
+            deleteCatMovieRelation(selectedID);
+            addCatMovieRelation(movie);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 }

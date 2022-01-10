@@ -1,6 +1,7 @@
 package MovieCollection.Dal;
 
 import MovieCollection.be.Category;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -65,7 +66,20 @@ public class CategoryDao {
             PreparedStatement statement =connection.prepareStatement(sql);
 
             statement.setInt(1, category.getId());
+            statement.execute();
+            deleteCatMovie(category.getId());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
+    public void deleteCatMovie(int ID)
+    {
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "DELETE FROM CatMovie WHERE CategoryId = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, ID);
             statement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

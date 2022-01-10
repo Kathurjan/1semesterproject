@@ -24,4 +24,10 @@ public class MovieLogic {
         return movieDao.getAllMovies();
     }
 
+    public void deleteMovie(Movie movie) { movieDao.deleteMovie(movie);
+    }
+
+    public void editMovie(Movie movie) {
+        movieDao.editMovie(movie);
+    }
 }

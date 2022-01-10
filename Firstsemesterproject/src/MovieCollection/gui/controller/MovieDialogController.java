@@ -101,6 +101,6 @@ public class MovieDialogController implements Initializable{
 
 
     public void handleRemoveCategoryClick(ActionEvent actionEvent) {
-        categoryList.removeIf(category -> category.getCategoryName().equals(getCategory().getCategoryName()));
+        categoryList.removeIf(category -> category.getId() == getCategory().getId());
     }
 }

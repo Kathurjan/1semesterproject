@@ -52,4 +52,8 @@ public class TableViewMoviesModel {
         this.movieList.addAll(movieLogic.getAllMovies());
     }
 
+    public boolean checkDates()
+    {
+       return movieLogic.checkDates(this.movieList);
+    }
 }

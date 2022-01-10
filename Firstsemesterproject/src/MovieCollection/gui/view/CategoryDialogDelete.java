@@ -10,7 +10,7 @@ import javafx.scene.control.DialogPane;
 
 import java.io.IOException;
 
-public class CategoryDialogDelete extends Dialog<Category> {
+public class CategoryDialogDelete extends Dialog<ButtonType> {
 
 
     private CategoryDialogDeleteController controller;
@@ -27,6 +27,7 @@ public class CategoryDialogDelete extends Dialog<Category> {
             this.setResultConverter(buttonType ->{
                 if(buttonType == ButtonType.CLOSE){
                     this.close();
+                    return ButtonType.CLOSE;
                 }
                 return null;
             });

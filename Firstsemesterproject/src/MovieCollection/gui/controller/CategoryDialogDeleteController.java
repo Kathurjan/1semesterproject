@@ -24,8 +24,10 @@ public class CategoryDialogDeleteController implements Initializable {
     }
 
     public void handleDeleteCategory(ActionEvent actionEvent) {
-        categoriesModel.deleteCategory(lstViewCategories.getSelectionModel().getSelectedItem());
-        lstViewCategories.setItems(categoriesModel.getAllCategories());
+        if (lstViewCategories.getSelectionModel().getSelectedItem()!= null) {
+            categoriesModel.deleteCategory(lstViewCategories.getSelectionModel().getSelectedItem());
+            lstViewCategories.setItems(categoriesModel.getAllCategories());
+        }
     }
 
 }

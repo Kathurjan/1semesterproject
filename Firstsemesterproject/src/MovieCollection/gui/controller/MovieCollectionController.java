@@ -11,10 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -47,7 +44,6 @@ public class MovieCollectionController implements Initializable {
         this.tableViewMoviesModel = new TableViewMoviesModel();
         this.categoriesModel = new CategoriesModel();
         movieTblView.setItems(tableViewMoviesModel.getMovieList());
-
         this.initTables();
     }
 
@@ -125,7 +121,11 @@ public class MovieCollectionController implements Initializable {
 
     public void handleDeleteCategoryClick(ActionEvent actionEvent) {
         CategoryDialogDelete dialog = new CategoryDialogDelete();
-        dialog.show();
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.CLOSE) {
+            this.tableViewMoviesModel.refresh();
+            movieTblView.setItems(this.tableViewMoviesModel.getMovieList());
+        }
     }
 
     public void handleFilterClick(ActionEvent actionEvent) {

@@ -51,7 +51,7 @@ public class TableViewMoviesModel {
 
     public void refresh()
     {
-        this.deleteAll();
+        deleteAll();
         this.movieList.addAll(movieLogic.getAllMovies());
     }
 

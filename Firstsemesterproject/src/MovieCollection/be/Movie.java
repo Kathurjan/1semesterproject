@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Movie {
     private ArrayList<Category> category;
-    private String categoryString;
     private String name;
     private double imdbRating;
     private double privateRating;
@@ -18,7 +17,6 @@ public class Movie {
         this.imdbRating = imdbRating;
         this.privateRating = privateRating;
         this.fileLink = fileLink;
-        this.categoryString = getCategoryString();
     }
 
     public Movie(int id, String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
@@ -28,8 +26,6 @@ public class Movie {
         this.privateRating = privateRating;
         this.fileLink = fileLink;
         this.id = id;
-        this.categoryString = getCategoryString();
-
     }
 
     public Date getLastview() {
@@ -49,17 +45,7 @@ public class Movie {
     public ArrayList<Category> getCategory() {
         return category;
     }
-
-    public String getCategoryString(){
-        StringBuilder sb = new StringBuilder();
-        for(Category s : category)
-        {
-            sb.append(", " + s.getCategoryName());
-        }
-        String string = sb.toString().replaceFirst(", ", "");
-        return string;
-    }
-
+    
     public void setCategory(ArrayList<Category> category) {
         this.category = category;
     }

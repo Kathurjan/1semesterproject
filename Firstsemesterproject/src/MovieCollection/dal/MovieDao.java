@@ -2,12 +2,11 @@ package MovieCollection.Dal;
 
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class MovieDao {
+public class MovieDao implements InterfaceMovieDao {
 
     private DatabaseConnector databaseConnector;
 
@@ -15,6 +14,7 @@ public class MovieDao {
         this.databaseConnector = new DatabaseConnector();
     }
 
+    @Override
     public Movie addMovie(Movie movie) {
         String movieName = movie.getName();
         double imdbRating = movie.getImdbRating();
@@ -48,6 +48,7 @@ public class MovieDao {
         return null;
     }
 
+    @Override
     public void addCatMovieRelation(Movie movie) {
         try (Connection connection = databaseConnector.getConnection()) {
             ArrayList<Category> categories = movie.getCategory();
@@ -71,6 +72,7 @@ public class MovieDao {
         }
     }
 
+    @Override
     public ArrayList<Movie> getAllMovies() {
         ArrayList<Movie> allMovies = new ArrayList<>();
 
@@ -103,6 +105,7 @@ public class MovieDao {
     }
 
 
+    @Override
     public ArrayList<Category> getCategoryRelations(Movie movie) {
         int movieID = movie.getId();
         ArrayList<Category> categories = new ArrayList<>();
@@ -127,6 +130,7 @@ public class MovieDao {
         return null;
     }
 
+    @Override
     public Category findCategory(int ID) {
         try (Connection connection = databaseConnector.getConnection()) {
 
@@ -148,6 +152,7 @@ public class MovieDao {
         return null;
     }
 
+    @Override
     public void deleteMovie(Movie movie) {
         int ID = movie.getId();
 
@@ -163,6 +168,7 @@ public class MovieDao {
         }
     }
 
+    @Override
     public void deleteCatMovieRelation(int ID) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM CatMovie WHERE Movieid = ?";
@@ -175,6 +181,7 @@ public class MovieDao {
         }
     }
 
+    @Override
     public void editMovie(Movie movie) {
         int selectedID = movie.getId();
         String movieName = movie.getName();

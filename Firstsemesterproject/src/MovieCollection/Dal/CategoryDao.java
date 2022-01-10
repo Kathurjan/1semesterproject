@@ -6,7 +6,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CategoryDao {
+public class CategoryDao implements InterfaceCategoryDao {
 
     private DatabaseConnector databaseConnector;
 
@@ -14,6 +14,7 @@ public class CategoryDao {
         this.databaseConnector = new DatabaseConnector();
     }
 
+    @Override
     public ArrayList<Category> getAllCategories() {
         ArrayList<Category> allCategories = new ArrayList<>();
 
@@ -36,6 +37,7 @@ public class CategoryDao {
         return allCategories;
     }
 
+    @Override
     public Category add(Category category) {
         String catName = category.getCategoryName();
 
@@ -58,6 +60,7 @@ public class CategoryDao {
         return null;
     }
 
+    @Override
     public void delete(Category category) {
 
         try (Connection connection = databaseConnector.getConnection())
@@ -73,6 +76,7 @@ public class CategoryDao {
         }
     }
 
+    @Override
     public void deleteCatMovie(int ID)
     {
         try (Connection connection = databaseConnector.getConnection()) {

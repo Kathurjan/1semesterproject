@@ -1,8 +1,6 @@
 package MovieCollection.Dal;
 
 import MovieCollection.be.Category;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -59,7 +57,6 @@ public class CategoryDao implements InterfaceCategoryDao {
         }
         return null;
     }
-
     @Override
     public void delete(Category category) {
 
@@ -89,4 +86,5 @@ public class CategoryDao implements InterfaceCategoryDao {
             throwables.printStackTrace();
         }
     }
+
 }

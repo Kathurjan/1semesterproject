@@ -2,7 +2,6 @@ package MovieCollection.Dal;
 
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -53,7 +52,6 @@ public class MovieDao implements InterfaceMovieDao {
         try (Connection connection = databaseConnector.getConnection()) {
             ArrayList<Category> categories = movie.getCategory();
             int movieID = movie.getId();
-
             for (Category cat : categories) {
                 int categoryID = cat.getId();
                 System.out.println(categoryID);

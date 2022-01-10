@@ -18,11 +18,20 @@ public class Movie {
         this.imdbRating = imdbRating;
         this.privateRating = privateRating;
         this.fileLink = fileLink;
+        this.categoryString = getCategoryString();
+    }
+
+    public Movie(int id, String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
+        this.category = category;
+        this.name = name;
+        this.imdbRating = imdbRating;
+        this.privateRating = privateRating;
+        this.fileLink = fileLink;
         this.id = id;
         this.categoryString = getCategoryString();
-        this.lastView = lastView;
 
     }
+
     public Date getLastview() {
         return lastView;
     }

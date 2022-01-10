@@ -46,11 +46,10 @@ public class CategoryDao {
             statement.setString(1, catName);
 
             ResultSet resultSet = statement.executeQuery();
-
             resultSet.next();
 
-            Category cat = new Category(resultSet.getString("CategoryName"),resultSet.getInt("ID"));
-            return cat;
+            category.setId(resultSet.getInt("ID"));
+            return category;
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

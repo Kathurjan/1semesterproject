@@ -11,7 +11,7 @@ public class DalController implements DalInterface {
 
     @Override
     public List<Movie> getAllMovie() {
-        return movieDao.getAllMovie();
+        return null;
     }
 
     @Override

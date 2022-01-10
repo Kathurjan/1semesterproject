@@ -3,30 +3,29 @@ package MovieCollection.gui.model;
 import MovieCollection.be.Movie;
 import MovieCollection.be.Category;
 import MovieCollection.bll.CategoryLogic;
+import MovieCollection.bll.MovieLogic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class TableViewMoviesModel {
 
     ObservableList<Movie> movieList;
-    CategoryLogic categoryLogic;
+    MovieLogic movieLogic;
 
     public TableViewMoviesModel()
     {
         movieList = FXCollections.observableArrayList();
-        this.categoryLogic = new CategoryLogic();
-
-        ArrayList<Category> categories = new ArrayList<>();
-        categories.addAll(categoryLogic.getAllCategories());
-        Movie testMovie = new Movie("bob", 4.2, 4.2, "whatever", categories);
-        movieList.add(testMovie);
+        this.movieLogic = new MovieLogic();
+        movieList.addAll(getAllMovies());
     }
 
     public void addMovie(Movie movie)
     {
         this.movieList.add(movie);
+        movieLogic.addMovie(movie);
     }
 
     public void deleteMovie(Movie movie)
@@ -40,5 +39,10 @@ public class TableViewMoviesModel {
 
     public ObservableList<Movie> getMovieList() {
         return movieList;
+    }
+
+    public ArrayList<Movie> getAllMovies()
+    {
+        return movieLogic.getAllMovies();
     }
 }

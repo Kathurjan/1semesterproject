@@ -1,5 +1,6 @@
 package MovieCollection.gui.model;
 
+import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Movie;
 import MovieCollection.be.Category;
 import MovieCollection.bll.CategoryLogic;
@@ -15,8 +16,7 @@ public class TableViewMoviesModel {
     ObservableList<Movie> movieList;
     MovieLogic movieLogic;
 
-    public TableViewMoviesModel()
-    {
+    public TableViewMoviesModel() throws DataException {
         movieList = FXCollections.observableArrayList();
         this.movieLogic = new MovieLogic();
         refresh();
@@ -26,18 +26,16 @@ public class TableViewMoviesModel {
         return movieList;
     }
 
-    public void addMovie(Movie movie)
-    {
+    public void addMovie(Movie movie) throws DataException {
         this.movieList.add(movieLogic.addMovie(movie));
     }
 
-    public void deleteMovie(Movie movie)
-    {
+    public void deleteMovie(Movie movie) throws DataException {
         this.movieList.remove(movie);
         movieLogic.deleteMovie(movie);
     }
 
-    public void editMovie(Movie selectedMovie, Movie editedMovie) {
+    public void editMovie(Movie selectedMovie, Movie editedMovie) throws DataException {
         editedMovie.setId(selectedMovie.getId());
         this.movieList.set(movieList.indexOf(selectedMovie), editedMovie);
         movieLogic.editMovie(editedMovie);
@@ -49,8 +47,7 @@ public class TableViewMoviesModel {
     }
 
 
-    public void refresh()
-    {
+    public void refresh() throws DataException {
         deleteAll();
         this.movieList.addAll(movieLogic.getAllMovies());
     }

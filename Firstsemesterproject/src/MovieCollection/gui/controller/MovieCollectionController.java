@@ -1,11 +1,13 @@
 package MovieCollection.gui.controller;
 
+import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
 import MovieCollection.gui.model.CategoriesModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
 import MovieCollection.gui.view.CategoryDialogAdd;
 import MovieCollection.gui.view.CategoryDialogDelete;
+import MovieCollection.gui.view.ErrorAlert;
 import MovieCollection.gui.view.MovieDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,10 +43,15 @@ public class MovieCollectionController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.tableViewMoviesModel = new TableViewMoviesModel();
-        this.categoriesModel = new CategoriesModel();
-        movieTblView.setItems(tableViewMoviesModel.getMovieList());
-        this.initTables();
+        try {
+            this.tableViewMoviesModel = new TableViewMoviesModel();
+            this.categoriesModel = new CategoriesModel();
+            movieTblView.setItems(tableViewMoviesModel.getMovieList());
+            this.initTables();
+        } catch (DataException e) {
+            createAlertDialog(e);
+            initialize(location, resources);
+        }
     }
 
     private void initTables() {
@@ -56,6 +63,11 @@ public class MovieCollectionController implements Initializable {
 
     }
 
+    private void createAlertDialog(Exception e) {
+        ErrorAlert dialog = new ErrorAlert(Alert.AlertType.CONFIRMATION, e.getMessage(), ButtonType.OK);
+        dialog.showAndWait();
+    }
+
     public void handleAddMovieClick(ActionEvent actionEvent) {
 
         MovieDialog dialog = new MovieDialog();
@@ -63,8 +75,9 @@ public class MovieCollectionController implements Initializable {
         result.ifPresent(response -> {
             try{
                 this.tableViewMoviesModel.addMovie(response);
-            } catch (Exception exception) {
-                exception.printStackTrace();
+            } catch (DataException e) {
+                createAlertDialog(e);
+                handleAddMovieClick(actionEvent);
             }
         });
 
@@ -81,8 +94,9 @@ public class MovieCollectionController implements Initializable {
                 response.setId(selectedMovie.getId());
                 try{
                     this.tableViewMoviesModel.editMovie(selectedMovie, response);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                } catch (DataException e) {
+                    createAlertDialog(e);
+                    handleEditMovieClick(actionEvent);
                 }
             });
         }
@@ -93,13 +107,13 @@ public class MovieCollectionController implements Initializable {
     public void handleDeleteMovieClick(ActionEvent actionEvent) {
 
       Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
-
       if(selectedMovie!=null)
       {
           try{
               this.tableViewMoviesModel.deleteMovie(selectedMovie);
-          } catch (Exception exception) {
-              exception.printStackTrace();
+          } catch (DataException e) {
+              createAlertDialog(e);
+              handleDeleteMovieClick(actionEvent);
           }
       }
 
@@ -112,8 +126,9 @@ public class MovieCollectionController implements Initializable {
         result.ifPresent(response -> {
             try{
                 this.categoriesModel.addNewCategory(response);
-            } catch (Exception exception) {
-                exception.printStackTrace();
+            } catch (DataException e) {
+                createAlertDialog(e);
+                handleAddCategoryClick(actionEvent);
             }
         });
 
@@ -123,8 +138,13 @@ public class MovieCollectionController implements Initializable {
         CategoryDialogDelete dialog = new CategoryDialogDelete();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.CLOSE) {
-            this.tableViewMoviesModel.refresh();
-            movieTblView.setItems(this.tableViewMoviesModel.getMovieList());
+            try {
+                this.tableViewMoviesModel.refresh();
+                movieTblView.setItems(this.tableViewMoviesModel.getMovieList());
+            } catch (DataException e) {
+                createAlertDialog(e);
+                handleDeleteCategoryClick(actionEvent);
+            }
         }
     }
 

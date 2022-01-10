@@ -1,15 +1,16 @@
 package MovieCollection.Dal;
 
+import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 
 import java.util.ArrayList;
 
 public interface InterfaceCategoryDao {
-    ArrayList<Category> getAllCategories();
+    ArrayList<Category> getAllCategories() throws DataException;
 
-    Category add(Category category);
+    Category add(Category category) throws DataException;
 
-    void delete(Category category);
+    void delete(Category category) throws DataException;
 
-    void deleteCatMovie(int ID);
+    void deleteCatMovie(int ID) throws DataException;
 }

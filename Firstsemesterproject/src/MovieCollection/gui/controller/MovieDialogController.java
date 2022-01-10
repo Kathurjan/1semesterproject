@@ -1,13 +1,13 @@
 package MovieCollection.gui.controller;
 
+import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 import MovieCollection.gui.model.CategoriesModel;
+import MovieCollection.gui.view.ErrorAlert;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -33,9 +33,19 @@ public class MovieDialogController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.categoryList = new ArrayList<>();
-        this.cbcModel = new CategoriesModel();
+        try {
+            this.cbcModel = new CategoriesModel();
+            choiceBoxCategory.getItems().addAll(cbcModel.getAllCategories());
+        } catch (DataException e) {
+            createAlertDialog(e);
+            initialize(location, resources);
+        }
 
-        choiceBoxCategory.getItems().addAll(cbcModel.getAllCategories());
+    }
+
+    private void createAlertDialog(Exception e) {
+        ErrorAlert dialog = new ErrorAlert(Alert.AlertType.CONFIRMATION, e.getMessage(), ButtonType.OK);
+        dialog.showAndWait();
     }
 
     public String getTitle() {

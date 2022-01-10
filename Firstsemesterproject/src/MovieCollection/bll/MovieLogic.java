@@ -1,5 +1,6 @@
 package MovieCollection.bll;
 
+import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.Dal.MovieDao;
 import MovieCollection.be.Movie;
 
@@ -14,20 +15,18 @@ public class MovieLogic {
         this.movieDao = new MovieDao();
     }
 
-    public Movie addMovie(Movie movie)
-    {
+    public Movie addMovie(Movie movie) throws DataException {
         return movieDao.addMovie(movie);
     }
 
-    public ArrayList<Movie> getAllMovies()
-    {
+    public ArrayList<Movie> getAllMovies() throws DataException {
         return movieDao.getAllMovies();
     }
 
-    public void deleteMovie(Movie movie) { movieDao.deleteMovie(movie);
+    public void deleteMovie(Movie movie) throws DataException { movieDao.deleteMovie(movie);
     }
 
-    public void editMovie(Movie movie) {
+    public void editMovie(Movie movie) throws DataException {
         movieDao.editMovie(movie);
     }
 }

@@ -1,5 +1,6 @@
 package MovieCollection.Dal;
 
+import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
 import java.sql.*;
@@ -14,7 +15,7 @@ public class MovieDao implements InterfaceMovieDao {
     }
 
     @Override
-    public Movie addMovie(Movie movie) {
+    public Movie addMovie(Movie movie) throws DataException {
         String movieName = movie.getName();
         double imdbRating = movie.getImdbRating();
         double personalRating = movie.getPrivateRating();
@@ -41,14 +42,13 @@ public class MovieDao implements InterfaceMovieDao {
             System.out.println(movie.getCategory());
             return movie;
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
-        return null;
     }
 
     @Override
-    public void addCatMovieRelation(Movie movie) {
+    public void addCatMovieRelation(Movie movie) throws DataException {
         try (Connection connection = databaseConnector.getConnection()) {
             ArrayList<Category> categories = movie.getCategory();
             int movieID = movie.getId();
@@ -65,13 +65,13 @@ public class MovieDao implements InterfaceMovieDao {
 
                 statement.execute();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
     }
 
     @Override
-    public ArrayList<Movie> getAllMovies() {
+    public ArrayList<Movie> getAllMovies() throws DataException {
         ArrayList<Movie> allMovies = new ArrayList<>();
 
         try (Connection connection = databaseConnector.getConnection()) {
@@ -96,15 +96,14 @@ public class MovieDao implements InterfaceMovieDao {
                 allMovies.add(movie);
             }
             return allMovies;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
-        return null;
     }
 
 
     @Override
-    public ArrayList<Category> getCategoryRelations(Movie movie) {
+    public ArrayList<Category> getCategoryRelations(Movie movie) throws DataException {
         int movieID = movie.getId();
         ArrayList<Category> categories = new ArrayList<>();
 
@@ -122,14 +121,13 @@ public class MovieDao implements InterfaceMovieDao {
             }
             return categories;
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
-        return null;
     }
 
     @Override
-    public Category findCategory(int ID) {
+    public Category findCategory(int ID) throws DataException {
         try (Connection connection = databaseConnector.getConnection()) {
 
             String sql = "SELECT * FROM Category WHERE ID=?";
@@ -144,14 +142,13 @@ public class MovieDao implements InterfaceMovieDao {
 
             return new Category(name, ID);
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
-        return null;
     }
 
     @Override
-    public void deleteMovie(Movie movie) {
+    public void deleteMovie(Movie movie) throws DataException {
         int ID = movie.getId();
 
         try (Connection connection = databaseConnector.getConnection()) {
@@ -161,26 +158,26 @@ public class MovieDao implements InterfaceMovieDao {
             statement.setInt(1, ID);
             statement.execute();
             deleteCatMovieRelation(ID);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
     }
 
     @Override
-    public void deleteCatMovieRelation(int ID) {
+    public void deleteCatMovieRelation(int ID) throws DataException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM CatMovie WHERE Movieid = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, ID);
             statement.execute();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
     }
 
     @Override
-    public void editMovie(Movie movie) {
+    public void editMovie(Movie movie) throws DataException {
         int selectedID = movie.getId();
         String movieName = movie.getName();
         double imdbRating = movie.getImdbRating();
@@ -201,8 +198,8 @@ public class MovieDao implements InterfaceMovieDao {
             statement.execute();
             deleteCatMovieRelation(selectedID);
             addCatMovieRelation(movie);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
     }
 

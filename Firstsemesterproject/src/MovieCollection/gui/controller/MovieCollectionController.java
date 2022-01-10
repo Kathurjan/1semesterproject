@@ -11,6 +11,7 @@ import MovieCollection.gui.view.ErrorAlert;
 import MovieCollection.gui.view.MovieDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -148,7 +149,19 @@ public class MovieCollectionController implements Initializable {
         }
     }
 
-    public void handleFilterClick(ActionEvent actionEvent) {
-
+    public void handleFilterSearch() {
+        FilteredList<Movie> movieList = null;
+        try {
+            movieList = new FilteredList<>(tableViewMoviesModel.getMovieList(), a -> true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        movieList.setPredicate(movieFiltered -> {
+            String inputSearch = filterTxtField.getText().toLowerCase();
+            if (movieFiltered.getName().toLowerCase().contains(inputSearch)) {
+                return true;
+            }
+            return movieFiltered.getName().toLowerCase().contains(inputSearch);
+        });
     }
 }

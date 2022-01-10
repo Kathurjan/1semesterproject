@@ -1,43 +1,89 @@
 package MovieCollection.Dal;
 
+import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.sql.*;
+import java.util.ArrayList;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
+public class CategoryDao implements InterfaceCategoryDao {
 
-public class CategoryDao {
+    private DatabaseConnector databaseConnector;
 
-    private static final DatabaseConnector db = new DatabaseConnector();
+    public CategoryDao() {
+        this.databaseConnector = new DatabaseConnector();
+    }
 
-    public List<Category> getAllCategory() {
-        ObservableList categorylist = FXCollections.observableArrayList();
-        try (Connection con = db.getConnection()) {
-            String sqlStatement = "SELECT * FROM dbo.Category";
-            Statement statement = con.createStatement();
+    @Override
+    public ArrayList<Category> getAllCategories() throws DataException {
+        ArrayList<Category> allCategories = new ArrayList<>();
 
-            if (statement.execute(sqlStatement)) {
-                ResultSet resultSet = statement.getResultSet();
-                while (resultSet.next()) {
-                    String CategoryName = resultSet.getString("CategoryName");
-                    int ID = resultSet.getInt("ID");
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "SELECT * FROM Category";
+            Statement statement = connection.createStatement();
 
-                    Category category = new Category(CategoryName, ID);
-                    categorylist.add(category);
-                }
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                int ID = resultSet.getInt("ID");
+                String name = resultSet.getString("CategoryName");
+
+                Category category = new Category(name, ID);
+                allCategories.add(category);
             }
-
-
-        } catch (SQLException ex) {
-            System.out.println(ex);
-            return null;
-
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
         }
-        return categorylist;
+        return allCategories;
+    }
+
+    @Override
+    public Category add(Category category) throws DataException {
+        String catName = category.getCategoryName();
+
+        try (Connection connection = databaseConnector.getConnection())
+        {
+            String sql ="INSERT INTO Category(CategoryName) OUTPUT inserted.* VALUES (?)";
+            PreparedStatement statement =connection.prepareStatement(sql);
+
+            statement.setString(1, catName);
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            category.setId(resultSet.getInt("ID"));
+            return category;
+
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
+        }
+    }
+    @Override
+    public void delete(Category category) throws DataException {
+
+        try (Connection connection = databaseConnector.getConnection())
+        {
+            String sql ="DELETE FROM Category WHERE ID=?";
+            PreparedStatement statement =connection.prepareStatement(sql);
+
+            statement.setInt(1, category.getId());
+            statement.execute();
+            deleteCatMovie(category.getId());
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
+        }
+    }
+
+    @Override
+    public void deleteCatMovie(int ID) throws DataException {
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "DELETE FROM CatMovie WHERE CategoryId = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, ID);
+            statement.execute();
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
+        }
     }
 
 }

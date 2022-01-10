@@ -1,9 +1,9 @@
 package MovieCollection.be;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Movie {
-    private String[] category;
-    private String categoryString;
+    private ArrayList<Category> category;
     private String name;
     private double imdbRating;
     private double privateRating;
@@ -11,17 +11,23 @@ public class Movie {
     private int id;
     private Date lastView;
 
-    public Movie(String name, double imdbRating, double privateRating, String fileLink, int id, String ... category) {
+    public Movie(String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
+        this.category = category;
+        this.name = name;
+        this.imdbRating = imdbRating;
+        this.privateRating = privateRating;
+        this.fileLink = fileLink;
+    }
+
+    public Movie(int id, String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
         this.category = category;
         this.name = name;
         this.imdbRating = imdbRating;
         this.privateRating = privateRating;
         this.fileLink = fileLink;
         this.id = id;
-        this.categoryString = getCategoryString();
-        this.lastView = lastView;
-
     }
+
     public Date getLastview() {
         return lastView;
     }
@@ -29,25 +35,18 @@ public class Movie {
     public void setLastview(Date lastview) {
         this.lastView = lastview;
     }
+
     public int getId(){
         return id;
     }
 
-    public String[] getCategory() {
+    public void setId(int id){this.id = id;}
+
+    public ArrayList<Category> getCategory() {
         return category;
     }
-
-    public String getCategoryString(){
-        StringBuilder sb = new StringBuilder();
-        for(String s : category)
-        {
-            sb.append(", " + s);
-        }
-        String string = sb.toString().replaceFirst(", ", "");
-        return string;
-    }
-
-    public void setCategory(String[] category) {
+    
+    public void setCategory(ArrayList<Category> category) {
         this.category = category;
     }
 

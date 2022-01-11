@@ -18,9 +18,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MovieCollectionController implements Initializable {
     public Button addMovieBtn;
@@ -149,19 +151,12 @@ public class MovieCollectionController implements Initializable {
         }
     }
 
-    public void handleFilterSearch() {
-        FilteredList<Movie> movieList = null;
-        try {
-            movieList = new FilteredList<>(tableViewMoviesModel.getMovieList(), a -> true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        movieList.setPredicate(movieFiltered -> {
-            String inputSearch = filterTxtField.getText().toLowerCase();
-            if (movieFiltered.getName().toLowerCase().contains(inputSearch)) {
-                return true;
-            }
-            return movieFiltered.getName().toLowerCase().contains(inputSearch);
-        });
+    public void handleFilterSearch(ActionEvent actionEvent) {
+        ObservableList<Movie> filteredList = FXCollections.observableArrayList();
+        List<Movie> result = tableViewMoviesModel.getMovieList().stream().filter(movie->
+                movie.getName().toLowerCase().contains(filterTxtField.getText().toLowerCase().trim())).collect(Collectors.toList());
+        filteredList.addAll(result);
+        movieTblView.setItems(filteredList);
     }
 }
+

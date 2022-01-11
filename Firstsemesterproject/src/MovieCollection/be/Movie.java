@@ -1,4 +1,5 @@
 package MovieCollection.be;
+import java.io.IOException;
 import java.util.Date;
 
 public class Movie {
@@ -81,6 +82,17 @@ public class Movie {
 
     public void setFileLink(String fileLink) {
         this.fileLink = fileLink;
+    }
+
+    public void openMovie()
+    {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            String[] command = {"cmd.exe", "/k", "Start", this.fileLink};
+            Process p =  runtime.exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

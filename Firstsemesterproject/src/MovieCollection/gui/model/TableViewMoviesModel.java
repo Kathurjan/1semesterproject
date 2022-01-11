@@ -10,6 +10,9 @@ import javafx.collections.ObservableList;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableViewMoviesModel {
 
@@ -19,6 +22,11 @@ public class TableViewMoviesModel {
     public TableViewMoviesModel() throws DataException {
         movieList = FXCollections.observableArrayList();
         this.movieLogic = new MovieLogic();
+        /*Movie movie = new Movie("test", 2.2, 2.0, " ", new ArrayList<>());
+        movie.setLastview(new Date(2000 + 1900, 0, 1 ));
+        addMovie(movie);
+
+         */
         refresh();
     }
 

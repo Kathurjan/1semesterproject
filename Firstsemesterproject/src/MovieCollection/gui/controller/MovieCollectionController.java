@@ -6,6 +6,7 @@ import MovieCollection.be.Movie;
 import MovieCollection.be.OldMovieList;
 import MovieCollection.gui.model.CategoriesModel;
 import MovieCollection.gui.model.CheckDateModel;
+import MovieCollection.gui.model.SearchModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
 import MovieCollection.gui.view.*;
 import javafx.collections.FXCollections;
@@ -16,9 +17,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MovieCollectionController implements Initializable {
     public Button addMovieBtn;
@@ -39,6 +42,7 @@ public class MovieCollectionController implements Initializable {
 
     private CategoriesModel categoriesModel;
     private CheckDateModel checkDateModel;
+    private SearchModel searchModel;
 
 
     @Override
@@ -47,6 +51,7 @@ public class MovieCollectionController implements Initializable {
             this.tableViewMoviesModel = new TableViewMoviesModel();
             this.categoriesModel = new CategoriesModel();
             this.checkDateModel = new CheckDateModel();
+            this.searchModel = new SearchModel();
             movieTblView.setItems(tableViewMoviesModel.getMovieList());
             this.initTables();
             createDatesDialog();
@@ -100,6 +105,7 @@ public class MovieCollectionController implements Initializable {
         result.ifPresent(response -> {
             try{
                 this.tableViewMoviesModel.addMovie(response);
+                tableViewMoviesModel.refresh();
             } catch (DataException e) {
                 createAlertDialog(e);
                 handleAddMovieClick(actionEvent);
@@ -119,6 +125,7 @@ public class MovieCollectionController implements Initializable {
                 response.setId(selectedMovie.getId());
                 try{
                     this.tableViewMoviesModel.editMovie(selectedMovie, response);
+                    this.tableViewMoviesModel.refresh();
                 } catch (DataException e) {
                     createAlertDialog(e);
                     handleEditMovieClick(actionEvent);
@@ -136,6 +143,7 @@ public class MovieCollectionController implements Initializable {
       {
           try{
               this.tableViewMoviesModel.deleteMovie(selectedMovie);
+              this.tableViewMoviesModel.refresh();
           } catch (DataException e) {
               createAlertDialog(e);
               handleDeleteMovieClick(actionEvent);
@@ -174,6 +182,11 @@ public class MovieCollectionController implements Initializable {
     }
 
     public void handleFilterClick(ActionEvent actionEvent) {
-
+        try {
+            movieTblView.setItems(searchModel.filterLists(filterTxtField.getText()));
+        } catch (DataException e) {
+            createAlertDialog(e);
+            handleFilterClick(actionEvent);
+        }
     }
 }

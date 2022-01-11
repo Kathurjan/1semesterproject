@@ -20,7 +20,7 @@ public class MovieDao implements InterfaceMovieDao {
         double imdbRating = movie.getImdbRating();
         double personalRating = movie.getPrivateRating();
         String fileLink = movie.getFileLink();
-        Date lastView = (Date) movie.getLastview();
+        java.util.Date lastView = movie.getLastview();
 
         try (Connection connection = databaseConnector.getConnection()) {
 
@@ -31,7 +31,7 @@ public class MovieDao implements InterfaceMovieDao {
             statement.setDouble(2, imdbRating);
             statement.setDouble(3, personalRating);
             statement.setString(4, fileLink);
-            statement.setDate(5, lastView);
+            statement.setObject(5, lastView);
 
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();

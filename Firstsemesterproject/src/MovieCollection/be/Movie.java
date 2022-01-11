@@ -10,6 +10,7 @@ public class Movie {
     private String fileLink;
     private int id;
     private Date lastView;
+    private String categoryString;
 
     public Movie(String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
         this.category = category;
@@ -17,6 +18,7 @@ public class Movie {
         this.imdbRating = imdbRating;
         this.privateRating = privateRating;
         this.fileLink = fileLink;
+        this.categoryString = getCategoryString();
     }
 
     public Movie(int id, String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
@@ -26,6 +28,7 @@ public class Movie {
         this.privateRating = privateRating;
         this.fileLink = fileLink;
         this.id = id;
+        this.categoryString = getCategoryString();
     }
 
     public Date getLastview() {
@@ -41,6 +44,16 @@ public class Movie {
     }
 
     public void setId(int id){this.id = id;}
+
+    public String getCategoryString()
+    {
+        StringBuilder sb = new StringBuilder();
+        for(Category cat: getCategory())
+        {
+            sb.append(", " + cat.toString());
+        }
+        return sb.toString().replaceFirst(", ", "");
+    }
 
     public ArrayList<Category> getCategory() {
         return category;

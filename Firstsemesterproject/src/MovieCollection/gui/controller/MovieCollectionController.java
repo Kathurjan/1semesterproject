@@ -3,12 +3,11 @@ package MovieCollection.gui.controller;
 import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
+import MovieCollection.be.OldMovieList;
 import MovieCollection.gui.model.CategoriesModel;
+import MovieCollection.gui.model.CheckDateModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
-import MovieCollection.gui.view.CategoryDialogAdd;
-import MovieCollection.gui.view.CategoryDialogDelete;
-import MovieCollection.gui.view.ErrorAlert;
-import MovieCollection.gui.view.MovieDialog;
+import MovieCollection.gui.view.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,6 +38,7 @@ public class MovieCollectionController implements Initializable {
     public TableColumn<Movie, String> tblColumnIMDBRating;
 
     private CategoriesModel categoriesModel;
+    private CheckDateModel checkDateModel;
 
 
     @Override
@@ -46,8 +46,10 @@ public class MovieCollectionController implements Initializable {
         try {
             this.tableViewMoviesModel = new TableViewMoviesModel();
             this.categoriesModel = new CategoriesModel();
+            this.checkDateModel = new CheckDateModel();
             movieTblView.setItems(tableViewMoviesModel.getMovieList());
             this.initTables();
+            createDatesDialog();
         } catch (DataException e) {
             createAlertDialog(e);
             initialize(location, resources);
@@ -61,6 +63,29 @@ public class MovieCollectionController implements Initializable {
         this.tblColumnPersonalRating.setCellValueFactory(new PropertyValueFactory<>("privateRating"));
         this.tblColumnIMDBRating.setCellValueFactory(new PropertyValueFactory<>("imdbRating"));
 
+    }
+
+    private void createDatesDialog()
+    {
+        try {
+            if(checkDateModel.getOldMoviesList().isShouldBeReturned())
+            {
+                DateDialog dialog = new DateDialog();
+                Optional<ButtonType> result = dialog.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.CLOSE) {
+                    try {
+                        this.tableViewMoviesModel.refresh();
+                        movieTblView.setItems(this.tableViewMoviesModel.getMovieList());
+                    } catch (DataException e) {
+                        createAlertDialog(e);
+                        createDatesDialog();
+                    }
+                }
+            }
+        } catch (DataException e) {
+            createAlertDialog(e);
+            createDatesDialog();
+        }
     }
 
     private void createAlertDialog(Exception e) {

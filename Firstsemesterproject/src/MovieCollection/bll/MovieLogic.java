@@ -3,6 +3,8 @@ package MovieCollection.bll;
 import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.Dal.MovieDao;
 import MovieCollection.be.Movie;
+import MovieCollection.be.OldMovieList;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,19 +33,24 @@ public class MovieLogic {
         movieDao.editMovie(movie);
     }
 
-    public boolean checkDates(ArrayList<Movie> movies)
+    public OldMovieList getAllOldMovies() throws DataException
     {
-        boolean alertUser = false;
+        ArrayList<Movie> movies = getAllMovies();
+        OldMovieList oldMovieList = new OldMovieList();
+        ArrayList<Movie> moviesToAdd = new ArrayList<>();
+
         for(Movie movie: movies)
         {
-            if(movie.getLastview().before(twoYearPriorDate(new Date()))){
-                alertUser = true;
+            if(movie.getLastview()!=null && movie.getLastview().before(twoYearPriorDate(new Date())) && movie.getPrivateRating()<6){
+                moviesToAdd.add(movie);
+                oldMovieList.setShouldBeReturned(true);
             }
         }
-        return alertUser;
+        oldMovieList.setMovies(moviesToAdd);
+        return oldMovieList;
     }
 
-    public Date twoYearPriorDate(Date date)
+    private Date twoYearPriorDate(Date date)
     {
         Date currentDate = new Date();
         Date newDate = new Date(currentDate.getYear()+1900-2, currentDate.getMonth(), currentDate.getDate());

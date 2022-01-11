@@ -9,15 +9,17 @@ import MovieCollection.gui.view.CategoryDialogAdd;
 import MovieCollection.gui.view.CategoryDialogDelete;
 import MovieCollection.gui.view.ErrorAlert;
 import MovieCollection.gui.view.MovieDialog;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -39,6 +41,7 @@ public class MovieCollectionController implements Initializable {
     public TableColumn<Movie, String> tblColumnIMDBRating;
 
     private CategoriesModel categoriesModel;
+    private ObservableList<Movie> observableListMovie = FXCollections.observableArrayList();
 
 
     @Override
@@ -48,6 +51,7 @@ public class MovieCollectionController implements Initializable {
             this.categoriesModel = new CategoriesModel();
             movieTblView.setItems(tableViewMoviesModel.getMovieList());
             this.initTables();
+            //this.searchFucnction();
         } catch (DataException e) {
             createAlertDialog(e);
             initialize(location, resources);
@@ -151,4 +155,51 @@ public class MovieCollectionController implements Initializable {
     public void handleFilterClick(ActionEvent actionEvent) {
 
     }
-}
+
+    public void searchFucnction(){
+        movieTblView.setItems(observableListMovie);
+        System.out.println(observableListMovie);
+
+        FilteredList<Movie> seachfilter = new FilteredList<>(observableListMovie, b -> true);
+        filterTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
+            seachfilter.setPredicate(movie -> {
+
+                // if search value is empty then it displays the songs as it is.
+                if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                    try {
+                        refreshMovieList();
+                    } catch (SQLServerException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                String seachWord = newValue.toLowerCase();
+                int searchnr = Integer.parseInt(newValue);
+                if (movie.getName().toLowerCase().indexOf(seachWord) > -1) {
+                    return true;
+                } else if (movie.getCategory().contains(seachWord)) {
+                    return true;
+                } else if (movie.getImdbRating() == searchnr){
+                    return true;
+                }
+                else if(movie.getPrivateRating() == searchnr){
+                    return true;
+                }
+                else
+                    return false;
+            });
+        });
+        SortedList<Movie> sorteddata = new SortedList<>(seachfilter);
+        // binds the sorted result set with the table view;
+        sorteddata.comparatorProperty().bind(movieTblView.comparatorProperty());
+        movieTblView.setItems(sorteddata);
+
+
+
+        }
+    public void refreshMovieList() throws SQLServerException {
+        movieTblView.setItems(movieTblView.getItems());
+
+    }
+    }
+

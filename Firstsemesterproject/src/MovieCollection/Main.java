@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+    public OpenMovie movie = new OpenMovie();
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("gui/view/MovieCollectionView.fxml"));
@@ -15,6 +15,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Movie Collection");
         primaryStage.show();
+        movie.testIt();
 
 
     }

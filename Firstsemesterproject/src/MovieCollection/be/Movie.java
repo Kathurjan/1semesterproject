@@ -41,8 +41,7 @@ public class Movie {
 
     public void setLastViewToCurrentDate()
     {
-        Date date = new Date();
-        this.setLastview(date);
+        this.setLastview(LocalDate.now());
     }
 
     public int getId(){

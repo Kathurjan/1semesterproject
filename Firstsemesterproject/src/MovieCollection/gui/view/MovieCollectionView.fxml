@@ -64,6 +64,11 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
          <children>
+            <Button fx:id="btnPlayMovie" mnemonicParsing="false" onAction="#handlePlayMovie" text="Play">
+               <HBox.margin>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </HBox.margin>
+            </Button>
             <Button fx:id="addMovieBtn" mnemonicParsing="false" onAction="#handleAddMovieClick" text="Add Movie">
                <HBox.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

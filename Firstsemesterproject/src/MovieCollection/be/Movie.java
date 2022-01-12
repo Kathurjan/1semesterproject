@@ -1,7 +1,6 @@
 package MovieCollection.be;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Movie {
     private ArrayList<Category> category;
@@ -95,6 +94,7 @@ public class Movie {
     public void setFileLink(String fileLink) {
         this.fileLink = fileLink;
     }
+
 
 
 }

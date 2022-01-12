@@ -8,6 +8,7 @@ import MovieCollection.bll.MovieLogic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -55,5 +56,17 @@ public class TableViewMoviesModel {
         deleteAll();
         this.movieList.addAll(movieLogic.getAllMovies());
     }
+
+    public void openMovie(Movie movie)
+    {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            String[] command = {"cmd.exe", "/k", "Start", movie.getFileLink()};
+            Process p =  runtime.exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

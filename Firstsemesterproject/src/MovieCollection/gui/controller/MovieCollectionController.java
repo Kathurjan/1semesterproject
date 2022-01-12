@@ -29,6 +29,7 @@ public class MovieCollectionController implements Initializable {
     public TextField filterTxtField;
     public TableView<Movie> movieTblView;
     public Button btnFilterSearch;
+    public Button btnPlayMovie;
     private TableViewMoviesModel tableViewMoviesModel;
     public TableColumn<Movie, String> tblColumnTitle;
     public TableColumn<Movie, String> tblColumnCategory;
@@ -223,6 +224,11 @@ public class MovieCollectionController implements Initializable {
             createAlertDialog(e);
             handleFilterClick(actionEvent);
         }
+    }
+
+    public void handlePlayMovie(ActionEvent actionEvent) {
+        tableViewMoviesModel.openMovie(movieTblView.getSelectionModel().getSelectedItem());
+        System.out.println(movieTblView.getSelectionModel().getSelectedItem().getFileLink());
     }
 }
 

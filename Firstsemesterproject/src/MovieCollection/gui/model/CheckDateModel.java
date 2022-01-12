@@ -27,4 +27,10 @@ public class CheckDateModel {
     {
        return movieLogic.getAllOldMovies();
     }
+
+    public void deleteMovie(Movie movie) throws DataException
+    {
+        movieLogic.deleteMovie(movie);
+        movies.remove(movie);
+    }
 }

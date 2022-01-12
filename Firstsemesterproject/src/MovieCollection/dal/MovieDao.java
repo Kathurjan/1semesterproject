@@ -4,6 +4,7 @@ import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MovieDao implements InterfaceMovieDao {
@@ -20,7 +21,7 @@ public class MovieDao implements InterfaceMovieDao {
         double imdbRating = movie.getImdbRating();
         double personalRating = movie.getPrivateRating();
         String fileLink = movie.getFileLink();
-        java.util.Date lastView = movie.getLastview();
+        java.sql.Date lastView = Date.valueOf(movie.getLastview());
 
         try (Connection connection = databaseConnector.getConnection()) {
 
@@ -31,7 +32,7 @@ public class MovieDao implements InterfaceMovieDao {
             statement.setDouble(2, imdbRating);
             statement.setDouble(3, personalRating);
             statement.setString(4, fileLink);
-            statement.setObject(5, lastView);
+            statement.setDate(5, lastView);
 
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
@@ -91,7 +92,9 @@ public class MovieDao implements InterfaceMovieDao {
                 ArrayList<Category> categories = new ArrayList<>();
 
                 Movie movie = new Movie(ID, movieName, imdbRating, personalRating, fileLink, categories);
-                movie.setLastview(lastView);
+                if(lastView!=null) {
+                    movie.setLastview(lastView.toLocalDate());
+                }
                 movie.setCategory(getCategoryRelations(movie));
                 allMovies.add(movie);
             }

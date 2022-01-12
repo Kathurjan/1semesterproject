@@ -6,6 +6,7 @@ import MovieCollection.be.Movie;
 import MovieCollection.be.OldMovieList;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -41,20 +42,13 @@ public class MovieLogic {
 
         for(Movie movie: movies)
         {
-            if(movie.getLastview()!=null && movie.getLastview().before(twoYearPriorDate(new Date())) && movie.getPrivateRating()<6){
+            if(movie.getLastview()!=null && movie.getLastview().isBefore(LocalDate.now().minusYears(2)) && movie.getPrivateRating()<6){
                 moviesToAdd.add(movie);
                 oldMovieList.setShouldBeReturned(true);
             }
         }
         oldMovieList.setMovies(moviesToAdd);
         return oldMovieList;
-    }
-
-    private Date twoYearPriorDate(Date date)
-    {
-        Date currentDate = new Date();
-        Date newDate = new Date(currentDate.getYear()+1900-2, currentDate.getMonth(), currentDate.getDate());
-        return newDate;
     }
 
 }

@@ -9,8 +9,6 @@ import MovieCollection.gui.model.SearchModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
 import MovieCollection.gui.view.*;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;

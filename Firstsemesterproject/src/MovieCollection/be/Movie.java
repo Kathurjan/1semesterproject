@@ -1,7 +1,6 @@
 package MovieCollection.be;
-import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Movie {
     private ArrayList<Category> category;
@@ -10,7 +9,7 @@ public class Movie {
     private double privateRating;
     private String fileLink;
     private int id;
-    private Date lastView;
+    private LocalDate lastView;
     private String categoryString;
 
     public Movie(String name, double imdbRating, double privateRating, String fileLink, ArrayList<Category> category) {
@@ -32,11 +31,11 @@ public class Movie {
         this.categoryString = getCategoryString();
     }
 
-    public Date getLastview() {
+    public LocalDate getLastview() {
         return lastView;
     }
 
-    public void setLastview(Date lastview) {
+    public void setLastview(LocalDate lastview) {
         this.lastView = lastview;
     }
 

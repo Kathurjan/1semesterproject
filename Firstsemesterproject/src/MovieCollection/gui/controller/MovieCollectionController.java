@@ -105,7 +105,6 @@ public class MovieCollectionController implements Initializable {
         result.ifPresent(response -> {
             try{
                 this.tableViewMoviesModel.addMovie(response);
-                tableViewMoviesModel.refresh();
             } catch (DataException e) {
                 createAlertDialog(e);
                 handleAddMovieClick(actionEvent);
@@ -125,7 +124,6 @@ public class MovieCollectionController implements Initializable {
                 response.setId(selectedMovie.getId());
                 try{
                     this.tableViewMoviesModel.editMovie(selectedMovie, response);
-                    this.tableViewMoviesModel.refresh();
                 } catch (DataException e) {
                     createAlertDialog(e);
                     handleEditMovieClick(actionEvent);
@@ -143,7 +141,6 @@ public class MovieCollectionController implements Initializable {
       {
           try{
               this.tableViewMoviesModel.deleteMovie(selectedMovie);
-              this.tableViewMoviesModel.refresh();
           } catch (DataException e) {
               createAlertDialog(e);
               handleDeleteMovieClick(actionEvent);

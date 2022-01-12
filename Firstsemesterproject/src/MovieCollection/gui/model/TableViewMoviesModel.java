@@ -66,6 +66,7 @@ public class TableViewMoviesModel {
         Runtime runtime = Runtime.getRuntime();
         try {
             String[] command = {"cmd.exe", "/k", "Start", movie.getFileLink()};
+            movie.setLastViewToCurrentDate();
             Process p =  runtime.exec(command);
         } catch (IOException e) {
             e.printStackTrace();

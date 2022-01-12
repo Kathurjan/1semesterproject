@@ -40,6 +40,12 @@ public class Movie {
         this.lastView = lastview;
     }
 
+    public void setLastViewToCurrentDate()
+    {
+        Date date = new Date();
+        this.setLastview(date);
+    }
+
     public int getId(){
         return id;
     }

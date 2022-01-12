@@ -3,25 +3,24 @@ package MovieCollection.gui.controller;
 import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
-import MovieCollection.be.OldMovieList;
 import MovieCollection.gui.model.CategoriesModel;
 import MovieCollection.gui.model.CheckDateModel;
 import MovieCollection.gui.model.SearchModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
 import MovieCollection.gui.view.*;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class MovieCollectionController implements Initializable {
     public Button addMovieBtn;
@@ -29,9 +28,7 @@ public class MovieCollectionController implements Initializable {
     public Button editMovieBtn;
     public Button addCategoryBtn;
     public Button deleteCategoryBtn;
-
     public TextField filterTxtField;
-
     public TableView<Movie> movieTblView;
     public Button btnFilterSearch;
     private TableViewMoviesModel tableViewMoviesModel;
@@ -45,6 +42,7 @@ public class MovieCollectionController implements Initializable {
     private SearchModel searchModel;
 
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -55,6 +53,7 @@ public class MovieCollectionController implements Initializable {
             movieTblView.setItems(tableViewMoviesModel.getMovieList());
             this.initTables();
             createDatesDialog();
+            this.searchFucnction();
         } catch (DataException e) {
             createAlertDialog(e);
             initialize(location, resources);
@@ -101,9 +100,9 @@ public class MovieCollectionController implements Initializable {
     public void handleAddMovieClick(ActionEvent actionEvent) {
 
         MovieDialog dialog = new MovieDialog();
-        Optional<Movie> result =dialog.showAndWait();
+        Optional<Movie> result = dialog.showAndWait();
         result.ifPresent(response -> {
-            try{
+            try {
                 this.tableViewMoviesModel.addMovie(response);
                 tableViewMoviesModel.refresh();
             } catch (DataException e) {
@@ -117,13 +116,13 @@ public class MovieCollectionController implements Initializable {
     public void handleEditMovieClick(ActionEvent actionEvent) {
 
         Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
-        if(selectedMovie != null){
+        if (selectedMovie != null) {
             MovieDialog dialog = new MovieDialog();
             dialog.setFields(selectedMovie);
             Optional<Movie> result = dialog.showAndWait();
             result.ifPresent(response -> {
                 response.setId(selectedMovie.getId());
-                try{
+                try {
                     this.tableViewMoviesModel.editMovie(selectedMovie, response);
                     this.tableViewMoviesModel.refresh();
                 } catch (DataException e) {
@@ -137,27 +136,23 @@ public class MovieCollectionController implements Initializable {
     }
 
     public void handleDeleteMovieClick(ActionEvent actionEvent) {
-
-      Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
-      if(selectedMovie!=null)
-      {
-          try{
-              this.tableViewMoviesModel.deleteMovie(selectedMovie);
-              this.tableViewMoviesModel.refresh();
-          } catch (DataException e) {
-              createAlertDialog(e);
-              handleDeleteMovieClick(actionEvent);
-          }
-      }
-
+        Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
+        if (selectedMovie != null) {
+            try {
+                this.tableViewMoviesModel.deleteMovie(selectedMovie);
+            } catch (DataException e) {
+                createAlertDialog(e);
+                handleDeleteMovieClick(actionEvent);
+            }
+        }
     }
 
     public void handleAddCategoryClick(ActionEvent actionEvent) {
 
         CategoryDialogAdd dialog = new CategoryDialogAdd();
-        Optional<Category> result =dialog.showAndWait();
+        Optional<Category> result = dialog.showAndWait();
         result.ifPresent(response -> {
-            try{
+            try {
                 this.categoriesModel.addNewCategory(response);
             } catch (DataException e) {
                 createAlertDialog(e);
@@ -180,6 +175,48 @@ public class MovieCollectionController implements Initializable {
             }
         }
     }
+    
+
+    public void searchFucnction() {
+        movieTblView.setItems(tableViewMoviesModel.getMovieList());
+
+        FilteredList<Movie> seachfilter = new FilteredList<>(tableViewMoviesModel.getMovieList(), b -> true);
+        filterTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
+            seachfilter.setPredicate(movie -> {
+
+                // if search value is empty then it displays the songs as it is.
+                if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                    try {
+                        refreshMovieList();
+                    } catch (SQLServerException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                String seachWord = newValue.toLowerCase();
+                if (movie.getName().toLowerCase().indexOf(seachWord) > -1) {
+                    return true;
+                } else if (movie.getCategory().contains(seachWord)) {
+                    return true;
+                } else if (String.valueOf(movie.getImdbRating()).contains(seachWord)) {
+                    return true;
+                } else if (String.valueOf(movie.getPrivateRating()).contains(seachWord)) {
+                    return true;
+                } else
+                    return false;
+            });
+        });
+        SortedList<Movie> sorteddata = new SortedList<>(seachfilter);
+        // binds the sorted result set with the table view;
+        sorteddata.comparatorProperty().bind(movieTblView.comparatorProperty());
+        movieTblView.setItems(sorteddata);
+
+
+    }
+
+    public void refreshMovieList() throws SQLServerException {
+        movieTblView.setItems(movieTblView.getItems());
+    }
 
     public void handleFilterClick(ActionEvent actionEvent) {
         try {
@@ -190,3 +227,4 @@ public class MovieCollectionController implements Initializable {
         }
     }
 }
+

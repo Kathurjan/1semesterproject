@@ -63,8 +63,9 @@ public class TableViewMoviesModel {
         try {
             String[] command = {"cmd.exe", "/k", "Start", movie.getFileLink()};
             movie.setLastViewToCurrentDate();
+            movieLogic.editMovie(movie);
             Process p =  runtime.exec(command);
-        } catch (IOException e) {
+        } catch (IOException | DataException e) {
             e.printStackTrace();
         }
     }

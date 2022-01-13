@@ -74,7 +74,9 @@ public class MovieDialogController implements Initializable{
 
     public void setPersonalRating(double rating){this.txtFieldPersonalRating.setText(String.valueOf(rating));}
 
-    public void setIMDB(double rating){this.txtFieldIMDB.setText(String.valueOf(rating));}
+    public void setIMDB(double rating){
+        this.txtFieldIMDB.setText(String.valueOf(rating));
+    }
 
     public void setFilePath(String path){this.txtFieldFile.setText(path);}
 
@@ -104,15 +106,7 @@ public class MovieDialogController implements Initializable{
     }
 
     public void handleAddCategoryClick(ActionEvent actionEvent) {
-        boolean shouldBeAdded = true;
-        for(Category cat: categoryList)
-        {
-            if(cat.getCategoryName().toLowerCase().strip().equals(getCategory().getCategoryName().toLowerCase().strip()))
-            {
-                shouldBeAdded = false;
-            }
-        }
-        if (shouldBeAdded)
+        if(cbcModel.canCategoryBeAdded(getCategory().getCategoryName().toLowerCase().strip()))
         {
             categoryList.add(getCategory());
             obsCatList.add(getCategory());
@@ -124,5 +118,7 @@ public class MovieDialogController implements Initializable{
         categoryList.removeIf(category -> category.getId() == getCategory().getId());
         obsCatList.removeIf(category -> category.getId() == getCategory().getId());
     }
+
+
 
 }

@@ -6,6 +6,8 @@ import MovieCollection.bll.CategoryLogic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+
 
 public class CategoriesModel {
 
@@ -31,6 +33,18 @@ public class CategoriesModel {
     public void deleteCategory(Category category) throws DataException {
         categoryLogic.delete(category);
         categories.remove(category);
+    }
+
+    public boolean canCategoryBeAdded(String catName)
+    {
+        for(Category cat: getAllCategories())
+        {
+            if(cat.getCategoryName().toLowerCase().equals(catName.toLowerCase().strip()))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

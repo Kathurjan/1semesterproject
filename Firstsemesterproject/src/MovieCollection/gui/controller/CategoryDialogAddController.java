@@ -5,6 +5,6 @@ import javafx.scene.control.TextField;
 public class CategoryDialogAddController {
     public TextField txtFieldCategory;
 
-    public String getName() {return this.txtFieldCategory.getText();
+    public String getName() {return this.txtFieldCategory.getText().strip();
     }
 }

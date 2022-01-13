@@ -20,7 +20,14 @@ public class MovieLogic {
     }
 
     public Movie addMovie(Movie movie) throws DataException {
-        return movieDao.addMovie(movie);
+        if(checkRatings(movie))
+        {
+            return movieDao.addMovie(movie);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public ArrayList<Movie> getAllMovies() throws DataException {
@@ -30,8 +37,15 @@ public class MovieLogic {
     public void deleteMovie(Movie movie) throws DataException { movieDao.deleteMovie(movie);
     }
 
-    public void editMovie(Movie movie) throws DataException {
-        movieDao.editMovie(movie);
+    public boolean editMovie(Movie movie) throws DataException {
+        if(checkRatings(movie)) {
+            movieDao.editMovie(movie);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public OldMovieList getAllOldMovies() throws DataException
@@ -49,6 +63,17 @@ public class MovieLogic {
         }
         oldMovieList.setMovies(moviesToAdd);
         return oldMovieList;
+    }
+
+    private boolean checkRatings(Movie movie)
+    {
+        if(movie.getImdbRating() > 10 || movie.getPrivateRating() > 10) {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
 }

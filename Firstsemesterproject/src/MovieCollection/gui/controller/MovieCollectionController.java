@@ -166,7 +166,7 @@ public class MovieCollectionController implements Initializable {
         Optional<Category> result = dialog.showAndWait();
         result.ifPresent(response -> {
             try {
-                if(categoriesModel.canCategoryBeAdded(response.getCategoryName())) {
+                if(categoriesModel.canCategoryBeAdded(response.getCategoryName(), categoriesModel.getAllCategoriesArray())) {
                     this.categoriesModel.addNewCategory(response);
                 }
             } catch (DataException e) {

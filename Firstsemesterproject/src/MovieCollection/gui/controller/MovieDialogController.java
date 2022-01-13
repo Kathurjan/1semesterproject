@@ -30,7 +30,7 @@ public class MovieDialogController implements Initializable{
     public ListView<Category> lstViewCategories;
     public ObservableList<Category> obsCatList;
 
-    private CategoriesModel cbcModel;
+    private CategoriesModel categoriesModel;
 
 
 
@@ -39,8 +39,8 @@ public class MovieDialogController implements Initializable{
         this.categoryList = new ArrayList<>();
         this.obsCatList = FXCollections.observableArrayList();
         try {
-            this.cbcModel = new CategoriesModel();
-            choiceBoxCategory.getItems().addAll(cbcModel.getAllCategories());
+            this.categoriesModel = new CategoriesModel();
+            choiceBoxCategory.getItems().addAll(categoriesModel.getAllCategories());
             lstViewCategories.setItems(obsCatList);
 
         } catch (DataException e) {
@@ -106,8 +106,7 @@ public class MovieDialogController implements Initializable{
     }
 
     public void handleAddCategoryClick(ActionEvent actionEvent) {
-        if(cbcModel.canCategoryBeAdded(getCategory().getCategoryName().toLowerCase().strip()))
-        {
+        if(categoriesModel.canCategoryBeAdded(getCategory().getCategoryName(), categoryList)) {
             categoryList.add(getCategory());
             obsCatList.add(getCategory());
         }

@@ -17,13 +17,15 @@ public class CategoriesModel {
     public CategoriesModel() throws DataException {
         this.categoryLogic = new CategoryLogic();
         this.categories = FXCollections.observableArrayList();
-        categories.addAll(categoryLogic.getAllCategories());
+        categories.addAll(getAllCategoriesArray());
     }
 
     public ObservableList<Category> getAllCategories()
     {
         return categories;
     }
+
+    public ArrayList<Category> getAllCategoriesArray() throws DataException {return categoryLogic.getAllCategories();}
 
     public void addNewCategory(Category category) throws DataException {
         categories.add(categoryLogic.add(category));
@@ -35,9 +37,9 @@ public class CategoriesModel {
         categories.remove(category);
     }
 
-    public boolean canCategoryBeAdded(String catName)
+    public boolean canCategoryBeAdded(String catName, ArrayList<Category> categories)
     {
-        for(Category cat: getAllCategories())
+        for(Category cat: categories)
         {
             if(cat.getCategoryName().toLowerCase().equals(catName.toLowerCase().strip()))
             {

@@ -21,18 +21,16 @@ public class MovieDao implements InterfaceMovieDao {
         double imdbRating = movie.getImdbRating();
         double personalRating = movie.getPrivateRating();
         String fileLink = movie.getFileLink();
-        java.sql.Date lastView = Date.valueOf(movie.getLastview());
 
         try (Connection connection = databaseConnector.getConnection()) {
 
-            String sql = "INSERT INTO Movie(Moviename, imdbRating, Personalrating, fileLink, lastview) OUTPUT INSERTED.* VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO Movie(Moviename, imdbRating, Personalrating, fileLink) OUTPUT INSERTED.* VALUES(?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setString(1, movieName);
             statement.setDouble(2, imdbRating);
             statement.setDouble(3, personalRating);
             statement.setString(4, fileLink);
-            statement.setDate(5, lastView);
 
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();

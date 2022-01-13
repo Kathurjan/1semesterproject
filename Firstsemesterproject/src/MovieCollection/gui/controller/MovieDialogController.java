@@ -4,6 +4,8 @@ import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.be.Category;
 import MovieCollection.gui.model.CategoriesModel;
 import MovieCollection.gui.view.ErrorAlert;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -25,6 +27,8 @@ public class MovieDialogController implements Initializable{
     public Button btnAddCategoryDialog;
     public Button btnRemoveCategoryDialog;
     public ChoiceBox<Category> choiceBoxCategory;
+    public ListView<Category> lstViewCategories;
+    public ObservableList<Category> obsCatList;
 
     private CategoriesModel cbcModel;
 
@@ -33,9 +37,12 @@ public class MovieDialogController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.categoryList = new ArrayList<>();
+        this.obsCatList = FXCollections.observableArrayList();
         try {
             this.cbcModel = new CategoriesModel();
             choiceBoxCategory.getItems().addAll(cbcModel.getAllCategories());
+            lstViewCategories.setItems(obsCatList);
+
         } catch (DataException e) {
             createAlertDialog(e);
             initialize(location, resources);
@@ -76,6 +83,8 @@ public class MovieDialogController implements Initializable{
         categoryList.addAll(categories);
     }
 
+    public void setObsCatList(ArrayList<Category> categories) {obsCatList.addAll(categories);}
+
     public ArrayList<Category> getCategoryList(){return this.categoryList;}
 
     public void handleChoose(ActionEvent actionEvent) {
@@ -98,7 +107,7 @@ public class MovieDialogController implements Initializable{
         boolean shouldBeAdded = true;
         for(Category cat: categoryList)
         {
-            if(cat.getCategoryName().equals(getCategory().getCategoryName()))
+            if(cat.getCategoryName().toLowerCase().strip().equals(getCategory().getCategoryName().toLowerCase().strip()))
             {
                 shouldBeAdded = false;
             }
@@ -106,11 +115,14 @@ public class MovieDialogController implements Initializable{
         if (shouldBeAdded)
         {
             categoryList.add(getCategory());
+            obsCatList.add(getCategory());
         }
     }
 
 
     public void handleRemoveCategoryClick(ActionEvent actionEvent) {
         categoryList.removeIf(category -> category.getId() == getCategory().getId());
+        obsCatList.removeIf(category -> category.getId() == getCategory().getId());
     }
+
 }

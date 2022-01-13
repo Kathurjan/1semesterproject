@@ -40,6 +40,7 @@ public class MovieDialog extends Dialog<Movie> {
         controller.setPersonalRating(movie.getPrivateRating());
         controller.setFilePath(movie.getFileLink());
         controller.setCategories(movie.getCategory());
+        controller.setObsCatList(movie.getCategory());
     }
 
 }

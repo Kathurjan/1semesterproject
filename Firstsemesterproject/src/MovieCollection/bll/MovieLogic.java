@@ -50,5 +50,7 @@ public class MovieLogic {
         oldMovieList.setMovies(moviesToAdd);
         return oldMovieList;
     }
-
+    public void editLastViewMovie(Movie movie) throws DataException {
+        movieDao.editLastViewMovie(movie);
+    }
 }

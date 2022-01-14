@@ -31,8 +31,17 @@ public class TableViewMoviesModel {
         return movieList;
     }
 
-    public void addMovie(Movie movie) throws DataException {
-        this.movieList.add(movieLogic.addMovie(movie));
+    public boolean addMovie(Movie movie) throws DataException {
+        Movie checkedMovie = movieLogic.addMovie(movie);
+        if(checkedMovie!=null)
+        {
+            this.movieList.add(checkedMovie);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void deleteMovie(Movie movie) throws DataException {
@@ -40,11 +49,17 @@ public class TableViewMoviesModel {
         movieLogic.deleteMovie(movie);
     }
 
-    public void editMovie(Movie selectedMovie, Movie editedMovie) throws DataException {
+    public boolean editMovie(Movie selectedMovie, Movie editedMovie) throws DataException {
         editedMovie.setId(selectedMovie.getId());
-        this.movieList.set(movieList.indexOf(selectedMovie), editedMovie);
-        movieLogic.editMovie(editedMovie);
-
+        if(movieLogic.editMovie(editedMovie))
+        {
+            this.movieList.set(movieList.indexOf(selectedMovie), editedMovie);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void deleteAll(){

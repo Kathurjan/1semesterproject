@@ -23,7 +23,7 @@ public class MovieDialog extends Dialog<Movie> {
             this.setDialogPane(dp);
             this.setResultConverter(buttonType -> {
                 if(buttonType == ButtonType.APPLY){
-                    return new Movie(controller.getTitle(), controller.getIMDB(), controller.getPersonalRating(), controller.getFilePath(), controller.getCategoryList());
+                        return new Movie(controller.getTitle(), controller.getIMDB(), controller.getPersonalRating(), controller.getFilePath(), controller.getCategoryList());
                 }
                 return null;
                     });

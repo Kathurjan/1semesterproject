@@ -91,6 +91,12 @@ public class MovieCollectionController implements Initializable {
         }
     }
 
+
+    private void createInputFailAlert() {
+        InputFailAlert dialog = new InputFailAlert(Alert.AlertType.CONFIRMATION, "Input Fail. Please enter a rating between 0-10", ButtonType.OK);
+        dialog.showAndWait();
+    }
+
     private void createAlertDialog(Exception e) {
         ErrorAlert dialog = new ErrorAlert(Alert.AlertType.CONFIRMATION, e.getMessage(), ButtonType.OK);
         dialog.showAndWait();
@@ -102,7 +108,11 @@ public class MovieCollectionController implements Initializable {
         Optional<Movie> result = dialog.showAndWait();
         result.ifPresent(response -> {
             try {
-                this.tableViewMoviesModel.addMovie(response);
+                if(!this.tableViewMoviesModel.addMovie(response))
+                {
+                    createInputFailAlert();
+                    handleAddMovieClick(actionEvent);
+                }
             } catch (DataException e) {
                 createAlertDialog(e);
                 handleAddMovieClick(actionEvent);
@@ -110,6 +120,7 @@ public class MovieCollectionController implements Initializable {
         });
 
     }
+
 
     public void handleEditMovieClick(ActionEvent actionEvent) {
 
@@ -121,7 +132,11 @@ public class MovieCollectionController implements Initializable {
             result.ifPresent(response -> {
                 response.setId(selectedMovie.getId());
                 try {
-                    this.tableViewMoviesModel.editMovie(selectedMovie, response);
+                    if(!this.tableViewMoviesModel.editMovie(selectedMovie, response))
+                    {
+                        createInputFailAlert();
+                        handleEditMovieClick(actionEvent);
+                    }
                 } catch (DataException e) {
                     createAlertDialog(e);
                     handleEditMovieClick(actionEvent);
@@ -151,7 +166,9 @@ public class MovieCollectionController implements Initializable {
         Optional<Category> result = dialog.showAndWait();
         result.ifPresent(response -> {
             try {
-                this.categoriesModel.addNewCategory(response);
+                if(categoriesModel.canCategoryBeAdded(response.getCategoryName(), categoriesModel.getAllCategoriesArray())) {
+                    this.categoriesModel.addNewCategory(response);
+                }
             } catch (DataException e) {
                 createAlertDialog(e);
                 handleAddCategoryClick(actionEvent);

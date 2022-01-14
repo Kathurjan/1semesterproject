@@ -66,7 +66,8 @@ public class MovieDialogController implements Initializable{
 
     public double getPersonalRating(){return Double.parseDouble(this.txtFieldPersonalRating.getText());}
 
-    public double getIMDB(){return Double.parseDouble(this.txtFieldIMDB.getText());}
+    public double getIMDB()
+    {return Double.parseDouble(this.txtFieldIMDB.getText());}
 
     public String getFilePath(){return this.txtFieldFile.getText();}
 

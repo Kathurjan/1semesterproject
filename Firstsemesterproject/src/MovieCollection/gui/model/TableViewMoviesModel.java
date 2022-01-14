@@ -72,15 +72,14 @@ public class TableViewMoviesModel {
         this.movieList.addAll(movieLogic.getAllMovies());
     }
 
-    public void openMovie(Movie movie)
-    {
+    public void openMovie(Movie movie) throws DataException {
         Runtime runtime = Runtime.getRuntime();
         try {
             String[] command = {"cmd.exe", "/k", "Start", movie.getFileLink()};
             movie.setLastViewToCurrentDate();
             movieLogic.editLastViewMovie(movie);
             Process p =  runtime.exec(command);
-        } catch (IOException | DataException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

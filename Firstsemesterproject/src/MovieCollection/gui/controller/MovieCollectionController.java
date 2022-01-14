@@ -243,7 +243,12 @@ public class MovieCollectionController implements Initializable {
     }
 
     public void handlePlayMovie(ActionEvent actionEvent) {
-        tableViewMoviesModel.openMovie(movieTblView.getSelectionModel().getSelectedItem());
+        try {
+            tableViewMoviesModel.openMovie(movieTblView.getSelectionModel().getSelectedItem());
+        } catch (DataException e) {
+            createAlertDialog(e);
+            handlePlayMovie(actionEvent);
+        }
         System.out.println(movieTblView.getSelectionModel().getSelectedItem().getFileLink());
     }
 }

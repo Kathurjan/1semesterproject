@@ -208,15 +208,11 @@ public class MovieDao implements InterfaceMovieDao {
         LocalDate movieDate = movie.getLastview();
 
         try (Connection connection = databaseConnector.getConnection()) {
-
             String sql = "UPDATE Movie SET lastview = ? WHERE ID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-
             statement.setDate(1, Date.valueOf(movieDate));
-
+            statement.setInt(2, selectedID);
             statement.execute();
-            deleteCatMovieRelation(selectedID);
-            addCatMovieRelation(movie);
         } catch (SQLException exception) {
             throw new DataException("Cant connect to DB", exception);
         }

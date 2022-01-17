@@ -16,6 +16,9 @@ public class SearchModel {
     private ArrayList<Movie> movieList;
 
     public SearchModel() throws DataException {
+
+
+
         this.movieLogic = new MovieLogic();
     }
 

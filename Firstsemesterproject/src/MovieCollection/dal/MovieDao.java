@@ -187,14 +187,32 @@ public class MovieDao implements InterfaceMovieDao {
 
         try (Connection connection = databaseConnector.getConnection()) {
 
-            String sql = "UPDATE Movie SET Moviename = ?, imdbRating = ?, Personalrating = ?, fileLink = ? WHERE ID = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            String query = "UPDATE Movie SET Moviename = ?, imdbRating = ?, Personalrating = ?, fileLink = ? WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, movieName);
             statement.setDouble(2, imdbRating);
             statement.setDouble(3, personalRating);
             statement.setString(4, fileLink);
             statement.setInt(5, selectedID);
+
+            statement.execute();
+            deleteCatMovieRelation(selectedID);
+            addCatMovieRelation(movie);
+        } catch (SQLException exception) {
+            throw new DataException("Cant connect to DB", exception);
+        }
+    }
+    public void editLastViewMovie(Movie movie) throws DataException {
+        int selectedID = movie.getId();
+        LocalDate movieDate = movie.getLastview();
+
+        try (Connection connection = databaseConnector.getConnection()) {
+
+            String sql = "UPDATE Movie SET lastview = ? WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setDate(1, Date.valueOf(movieDate));
 
             statement.execute();
             deleteCatMovieRelation(selectedID);

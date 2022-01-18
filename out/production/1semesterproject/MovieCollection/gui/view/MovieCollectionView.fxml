@@ -52,11 +52,6 @@
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="btnFilterSearch" mnemonicParsing="false" onAction="#handleFilterClick" text="Search">
-               <HBox.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-               </HBox.margin>
-            </Button>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

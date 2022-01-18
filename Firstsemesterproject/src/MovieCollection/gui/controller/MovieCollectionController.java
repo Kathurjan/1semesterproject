@@ -5,7 +5,6 @@ import MovieCollection.be.Category;
 import MovieCollection.be.Movie;
 import MovieCollection.gui.model.CategoriesModel;
 import MovieCollection.gui.model.CheckDateModel;
-import MovieCollection.gui.model.SearchModel;
 import MovieCollection.gui.model.TableViewMoviesModel;
 import MovieCollection.gui.view.*;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -38,7 +37,6 @@ public class MovieCollectionController implements Initializable {
 
     private CategoriesModel categoriesModel;
     private CheckDateModel checkDateModel;
-    private SearchModel searchModel;
 
 
 
@@ -48,7 +46,6 @@ public class MovieCollectionController implements Initializable {
             this.tableViewMoviesModel = new TableViewMoviesModel();
             this.categoriesModel = new CategoriesModel();
             this.checkDateModel = new CheckDateModel();
-            this.searchModel = new SearchModel();
             movieTblView.setItems(tableViewMoviesModel.getMovieList());
             this.initTables();
             createDatesDialog();
@@ -233,14 +230,6 @@ public class MovieCollectionController implements Initializable {
         movieTblView.setItems(movieTblView.getItems());
     }
 
-    public void handleFilterClick(ActionEvent actionEvent) {
-        try {
-            movieTblView.setItems(searchModel.filterLists(filterTxtField.getText()));
-        } catch (DataException e) {
-            createAlertDialog(e);
-            handleFilterClick(actionEvent);
-        }
-    }
 
     public void handlePlayMovie(ActionEvent actionEvent) {
         try {

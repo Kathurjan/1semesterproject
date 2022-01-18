@@ -187,8 +187,8 @@ public class MovieDao implements InterfaceMovieDao {
 
         try (Connection connection = databaseConnector.getConnection()) {
 
-            String sql = "UPDATE Movie SET Moviename = ?, imdbRating = ?, Personalrating = ?, fileLink = ? WHERE ID = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            String query = "UPDATE Movie SET Moviename = ?, imdbRating = ?, Personalrating = ?, fileLink = ? WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, movieName);
             statement.setDouble(2, imdbRating);

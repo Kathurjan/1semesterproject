@@ -4,11 +4,9 @@ import MovieCollection.Dal.Exceptions.DataException;
 import MovieCollection.Dal.MovieDao;
 import MovieCollection.be.Movie;
 import MovieCollection.be.OldMovieList;
-import javafx.collections.ObservableList;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 public class MovieLogic {
 
@@ -79,5 +77,5 @@ public class MovieLogic {
     public void editLastViewMovie(Movie movie) throws DataException {
         movieDao.editLastViewMovie(movie);
     }
-
+    
 }

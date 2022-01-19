@@ -77,5 +77,5 @@ public class MovieLogic {
     public void editLastViewMovie(Movie movie) throws DataException {
         movieDao.editLastViewMovie(movie);
     }
-    
+
 }
